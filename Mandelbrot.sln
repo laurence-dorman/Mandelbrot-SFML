@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mandelbrot", "Mandelbrot\Mandelbrot.vcxproj", "{7020F26E-B40C-476A-9019-248F2CFB7B85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7020F26E-B40C-476A-9019-248F2CFB7B85}.Debug|x86.ActiveCfg = Debug|Win32
+		{7020F26E-B40C-476A-9019-248F2CFB7B85}.Debug|x86.Build.0 = Debug|Win32
+		{7020F26E-B40C-476A-9019-248F2CFB7B85}.Release|x86.ActiveCfg = Release|Win32
+		{7020F26E-B40C-476A-9019-248F2CFB7B85}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C79BE652-2229-48FC-A681-AE07B21D6640}
+	EndGlobalSection
+EndGlobal
