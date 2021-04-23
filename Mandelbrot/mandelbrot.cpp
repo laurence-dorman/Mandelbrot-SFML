@@ -1,6 +1,6 @@
 #include "mandelbrot.h"
 
-const unsigned int max_iterations = 100;
+const unsigned int max_iterations = 10;
 
 Mandelbrot::Mandelbrot(int width, int height):
 	width_(width),
@@ -13,7 +13,7 @@ Mandelbrot::Mandelbrot(int width, int height):
 }
 
 // The parameters specify the region on the complex plane to plot.
-void Mandelbrot::compute_mandelbrot(double left, double right, double top, double bottom, double y_start, double y_end)
+void Mandelbrot::compute_mandelbrot(sf::Rect<long double> view, double y_start, double y_end)
 {
 	for (int y = y_start; y < y_end; ++y)
 	{
@@ -21,11 +21,11 @@ void Mandelbrot::compute_mandelbrot(double left, double right, double top, doubl
 		{
 			// Work out the point in the complex plane that
 			// corresponds to this pixel in the output image.
-			complex<double> c(left + (x * (right - left) / width_),
-				top + (y * (bottom - top) / height_));
+			complex<long double> c(view.left + (x * (view.left + view.width - view.left) / width_),
+				view.top + (y * (view.top + view.height - view.top) / height_));
 
 			// Start off z at (0, 0).
-			complex<double> z(0.0, 0.0);
+			complex<long double> z(0.0, 0.0);
 
 			// Iterate z = z^2 + c until z moves more than 2 units
 			// away from (0, 0), or we've iterated too many times.
@@ -52,6 +52,24 @@ void Mandelbrot::compute_mandelbrot(double left, double right, double top, doubl
 		}
 	}
 	texture_.update(image_);
+}
+
+void Mandelbrot::do_mandelbrot(sf::Rect<long double> view)
+{
+	std::vector<thread*> threads_vec;
+
+	const int num_threads = 16;
+	const double slice = height_ / num_threads;
+
+	for (int i = 0; i < 16; i++) {
+		sf::Rect<long double> view_ = view;
+
+		threads_vec.push_back(new thread(std::bind(&Mandelbrot::compute_mandelbrot, this, view_, i * slice, i * slice + slice), view_, i * slice, i * slice + slice));
+	}
+
+	for (std::thread* THREAD : threads_vec) {
+		THREAD->join();
+	}
 }
 
 sf::Color Mandelbrot::getColour(int i)
