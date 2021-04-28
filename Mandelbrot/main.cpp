@@ -1,28 +1,34 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #include "farm.h"
 #include "task.h"
 #include "mandelbrot_task.h"
 #include "mandelbrot.h"
 
-// 3 / 2.25 = ASPECT RATIO
-#define MB_RECT -2.0, 1.0, 1.125, -1.125
-
 sf::RenderWindow* window;
 Mandelbrot* mandelbrot;
+
+double l =	-2.25;
+double r =	 0.75;
+double t =	 1.5;
+double b =  -1.5;
+
+double wh_scale = (double)width / (double)height;
 
 void runFarm() {
 	Farm farm;
 
-	const double num_segments = 200.0;
+	const double num_segments = 960.0;
 	const double slice = (double)height / num_segments;
 
 	for (int i = 0; i < num_segments; i++) {
-		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), MB_RECT, i * slice, i * slice + slice));
+		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice));
 	}
 
 	farm.run();
 	mandelbrot->update();
+	std::cout << l <<  " " << r << " " << t << " " << b << std::endl;
 }
 
 int main()
@@ -42,7 +48,7 @@ int main()
 
 			if (event.type == sf::Event::KeyPressed)
 			{
-				//handle_keyboard_input();
+				// keyboard input
 			}
 			if (event.type == sf::Event::MouseButtonPressed)
 			{

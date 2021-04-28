@@ -16,10 +16,9 @@ void Farm::run()
 		threads_vec.push_back(new std::thread([&]
 			{
 				while (!queue_.empty()) {
-					Task* task;
 					std::mutex queue_mutex;
-
 					queue_mutex.lock();
+					Task* task;
 
 					task = queue_.front();
 					queue_.pop();

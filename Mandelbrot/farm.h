@@ -10,8 +10,6 @@
 /** A collection of tasks that should be performed in parallel. */
 class Farm {
 public:
-	// DO NOT CHANGE the public interface of this class.
-	// You only need to implement the existing methods.
 
 	/** Add a task to the farm.
 		The task will be deleted once it has been run. */
@@ -25,7 +23,6 @@ public:
 private:
 
 	std::queue<Task*> queue_;
-
 };
 
 #endif
