@@ -5,30 +5,32 @@
 #include "mandelbrot_task.h"
 #include "mandelbrot.h"
 
+// 3 / 2.25 = ASPECT RATIO
+#define MB_RECT -2.0, 1.0, 1.125, -1.125
+
 sf::RenderWindow* window;
 Mandelbrot* mandelbrot;
 
-void runFarm(Mandelbrot* m_brot) {
+void runFarm() {
 	Farm farm;
 
 	const double num_segments = 200.0;
 	const double slice = (double)height / num_segments;
 
 	for (int i = 0; i < num_segments; i++) {
-		farm.add_task(new MandelbrotTask(m_brot->getImage(), -2.0, 1.0, 1.125, -1.125, i * slice, i * slice + slice));
+		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), MB_RECT, i * slice, i * slice + slice));
 	}
 
 	farm.run();
-	m_brot->update();
+	mandelbrot->update();
 }
 
 int main()
 {
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot");
-
 	mandelbrot = new Mandelbrot(width, height);
 
-	runFarm(mandelbrot);
+	runFarm();
 
 	while (window->isOpen())
 	{
