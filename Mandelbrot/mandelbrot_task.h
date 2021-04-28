@@ -9,13 +9,13 @@ using std::complex;
 const unsigned int width = 1280;
 const unsigned int height = 960;
 
-const unsigned int max_iterations = 100;
+const unsigned int max_iterations = 200;
 
 /** Task that computes a portion of a mandelbrot */
 class MandelbrotTask : public Task
 {
 public:
-	MandelbrotTask(sf::Image* image, float left, float right, float top, float bottom, double y_start, double y_end) : 
+	MandelbrotTask(sf::Image* image, double left, double right, double top, double bottom, double y_start, double y_end) : 
 		image_(image),
 		left_(left),
 		right_(right),
@@ -29,7 +29,7 @@ public:
 	void run();
 
 private:
-	float left_; float right_; float top_; float bottom_; double y_start_; double y_end_;
+	double left_; double right_; double top_; double bottom_; double y_start_; double y_end_;
 
 	sf::Image* image_;
 

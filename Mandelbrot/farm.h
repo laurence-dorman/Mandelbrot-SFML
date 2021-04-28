@@ -6,7 +6,6 @@
 #include <queue>
 #include <mutex>
 
-// FIXME - You will need to add #includes here (probably <mutex> at least)
 
 /** A collection of tasks that should be performed in parallel. */
 class Farm {
@@ -24,7 +23,6 @@ public:
 	void run();
 
 private:
-	// FIXME - You will need to add private member variables here
 
 	std::queue<Task*> queue_;
 

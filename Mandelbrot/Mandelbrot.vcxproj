@@ -147,10 +147,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="farm.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mandelbrot_task.cpp" />
+    <ClCompile Include="task.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="farm.h" />
     <ClInclude Include="mandelbrot.h" />
+    <ClInclude Include="mandelbrot_task.h" />
+    <ClInclude Include="task.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

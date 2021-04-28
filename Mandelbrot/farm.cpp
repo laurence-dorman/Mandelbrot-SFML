@@ -1,19 +1,14 @@
 #include "farm.h"
 
-// FIXME - You may need to add #includes here (e.g. <thread>)
-
 #include <thread>
 
 void Farm::add_task(Task* task)
 {
-	// FIXME - Implement this
 	queue_.push(task);
 }
 
 void Farm::run()
 {
-	// FIXME - Implement this
-
 	const int num_threads = std::thread::hardware_concurrency();
 	std::vector<std::thread*> threads_vec;
 

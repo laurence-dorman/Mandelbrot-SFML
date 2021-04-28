@@ -2,9 +2,9 @@
 
 void MandelbrotTask::run() 
 {
-	for (int y = y_start_; y < y_end_; ++y)
+	for (double y = y_start_; y < y_end_; ++y)
 	{
-		for (int x = 0; x < width; ++x)
+		for (double x = 0; x < width; ++x)
 		{
 			// Work out the point in the complex plane that
 			// corresponds to this pixel in the output image.
