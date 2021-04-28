@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="farm.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mandelbrot.cpp" />
     <ClCompile Include="mandelbrot_task.cpp" />
     <ClCompile Include="task.cpp" />
   </ItemGroup>

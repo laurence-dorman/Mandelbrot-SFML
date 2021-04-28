@@ -3,36 +3,32 @@
 #include "farm.h"
 #include "task.h"
 #include "mandelbrot_task.h"
+#include "mandelbrot.h"
 
 sf::RenderWindow* window;
+Mandelbrot* mandelbrot;
+
+void runFarm(Mandelbrot* m_brot) {
+	Farm farm;
+
+	const double num_segments = 200.0;
+	const double slice = (double)height / num_segments;
+
+	for (int i = 0; i < num_segments; i++) {
+		farm.add_task(new MandelbrotTask(m_brot->getImage(), -2.0, 1.0, 1.125, -1.125, i * slice, i * slice + slice));
+	}
+
+	farm.run();
+	m_brot->update();
+}
 
 int main()
 {
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot");
 
-	sf::Texture texture;
-	texture.create(width, height);
+	mandelbrot = new Mandelbrot(width, height);
 
-	sf::Image image;
-	image.create(width, height, sf::Color(0, 0, 0));
-
-	// Farm
-		Farm farm;
-
-		const double num_segments = 200.0;
-		const double slice = (double)height / num_segments;
-
-		for (int i = 0; i < num_segments; i++) {
-			farm.add_task(new MandelbrotTask(&image, -2.0, 1.0, 1.125, -1.125, i * slice, i * slice + slice));
-		}
-
-		farm.run();
-	//
-	
-	texture.update(image);
-
-	sf::Sprite mandelbrot;
-	mandelbrot.setTexture(texture);
+	runFarm(mandelbrot);
 
 	while (window->isOpen())
 	{
@@ -53,7 +49,7 @@ int main()
 		}
 
 		window->clear();
-		window->draw(mandelbrot);
+		window->draw(*mandelbrot);
 		window->display();
 	}
 
