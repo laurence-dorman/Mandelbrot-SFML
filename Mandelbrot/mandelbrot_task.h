@@ -9,7 +9,7 @@ using std::complex;
 const unsigned int width = 1280;
 const unsigned int height = 960;
 
-const unsigned int max_iterations = 50;
+const unsigned int max_iterations = 100;
 
 /** Task that computes a portion of a mandelbrot */
 class MandelbrotTask : public Task

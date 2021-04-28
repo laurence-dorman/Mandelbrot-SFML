@@ -18,6 +18,7 @@ void Farm::run()
 				while (!queue_.empty()) {
 					std::mutex queue_mutex;
 					queue_mutex.lock();
+
 					Task* task;
 
 					task = queue_.front();
