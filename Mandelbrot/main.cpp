@@ -7,35 +7,46 @@
 #include "mandelbrot_task.h"
 #include "mandelbrot.h"
 
-
 sf::RenderWindow* window;
 Mandelbrot* mandelbrot;
 
 // -0.678027 -0.674145 0.363877 0.360249
 // -0.603531 -0.488737 0.65485 0.568753
+// -0.756145 -0.709464 0.260511 0.223836
 
 double l = -2.25;
 double r = 0.75;
 double t = 1.5;
 double b = -1.5;
 
-int scale_factor = 10;
+double view_width = std::abs(r-l);
+double view_height = std::abs(t-b);
+
+int scale_factor = 100;
+
+int max_iterations = 200;
 
 double wh_scale = (double)width / (double)height;
 
 void runFarm() {
 	Farm farm;
 
-	const double num_segments = 960.0;
+	const double num_segments = 200.0;
 	const double slice = (double)height / num_segments;
 
 	for (int i = 0; i < num_segments; i++) {
-		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice));
+		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations));
 	}
 
 	farm.run();
 	mandelbrot->update();
 	std::cout << l <<  " " << r << " " << t << " " << b << std::endl;
+}
+
+void updateViewSize() 
+{
+	view_width = std::abs(r - l);
+	view_height = std::abs(t - b);
 }
 
 int main()
@@ -76,7 +87,9 @@ int main()
 
 					scale_factor+=10;
 
+					updateViewSize();
 					runFarm();
+					std::cout << std::endl;
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 				{
@@ -92,39 +105,33 @@ int main()
 
 					runFarm();
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-				{
-					l -= 0.5 / scale_factor;
-					r -= 0.5 / scale_factor;
-
-					runFarm();
-				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-				{
-					l += 0.5 / scale_factor;
-					r += 0.5 / scale_factor;
-
-					runFarm();
-				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-				{
-					t += 0.5 / scale_factor;
-					b += 0.5 / scale_factor;
-
-					runFarm();
-				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-				{
-					t -= 0.5 / scale_factor;
-					b -= 0.5 / scale_factor;
-
-					runFarm();
-				}
-				
 			}
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
 				//handle_mouse_input();
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
+				{
+					updateViewSize();
+
+					double click_pos_x = sf::Mouse::getPosition(*window).x / (double)width * view_width + l;
+					double click_pos_y = sf::Mouse::getPosition(*window).y / (double)height * -view_height + t;
+
+					l = std::lerp(l, click_pos_x - view_width/2, 1.0);
+					r = std::lerp(r, click_pos_x + view_width/2, 1.0);
+
+					t = std::lerp(t , click_pos_y + view_height / 2, 1.0);
+					b = std::lerp(b , click_pos_y - view_height / 2, 1.0);
+
+					l = std::lerp(l, r, 0.1);
+					r = std::lerp(r, l, 0.1);
+
+					t = std::lerp(t, b, 0.1);
+					b = std::lerp(b, t, 0.1);
+
+					max_iterations += 20.0;
+
+					runFarm();
+				}
 			}
 		}
 
