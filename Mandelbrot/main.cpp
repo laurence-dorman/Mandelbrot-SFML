@@ -10,19 +10,15 @@
 sf::RenderWindow* window;
 Mandelbrot* mandelbrot;
 
-// -0.678027 -0.674145 0.363877 0.360249
-// -0.603531 -0.488737 0.65485 0.568753
-// -0.756145 -0.709464 0.260511 0.223836
+double l = -2.25; double r = 0.75; double t = 1.5; double b = -1.5; // default
+ 
+//double l = -0.603531; double r = -0.488737; double t = 0.65485; double b = 0.568753;
+//double l = -0.394687; double r = -0.378788; double t = 0.629904; double b = 0.61798;
 
-double l = -2.25;
-double r = 0.75;
-double t = 1.5;
-double b = -1.5;
+int max_iterations = 200;
 
-double view_width = std::abs(r-l);
-double view_height = std::abs(t-b);
-
-int max_iterations = 100;
+double view_width = std::abs(r - l);
+double view_height = std::abs(t - b);
 
 void runFarm() {
 
@@ -36,7 +32,8 @@ void runFarm() {
 
 	farm.run();
 	mandelbrot->update();
-	std::cout << l <<  " " << r << " " << t << " " << b << std::endl;
+
+	std::cout << "double l = " << l << "; double r = " << r << "; double t = " << t << "; double b = " << b << ";" << std::endl << "int max_iterations = " << max_iterations << ";" << std::endl;;
 }
 
 void updateViewSize() {
@@ -67,7 +64,11 @@ void lerpToPos(double x, double y, double m_t, double z_t){
 
 	runFarm();
 
-	max_iterations += 50 * z_t; // increase detail (max_iterations) as we zoom in, and decrease as we zoom out
+	max_iterations += 100 * z_t; // increase detail (max_iterations) as we zoom in, and decrease as we zoom out
+
+	if (max_iterations <= 0) {
+		max_iterations = 10;
+	}
 }
 
 void handleMouseInput() {
