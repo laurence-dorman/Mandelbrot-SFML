@@ -17,5 +17,7 @@ private:
 	sf::Texture texture;
 	sf::Image image;
 
+	int i = 0;
+
 };
 
