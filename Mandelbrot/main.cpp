@@ -16,6 +16,7 @@ double l = -2.25; double r = 0.75; double t = 1.5; double b = -1.5; // default
 //double l = -0.394687; double r = -0.378788; double t = 0.629904; double b = 0.61798;
 
 int max_iterations = 200;
+double centre_x = 0.0; double centre_y = 0.0;
 
 double view_width = std::abs(r - l);
 double view_height = std::abs(t - b);
@@ -45,6 +46,8 @@ void updateViewSize() {
 void lerpToPos(double x, double y, double m_t, double z_t){
 
 	// x, y is the center of the new view rectangle, m_t is the movement lerp "time" (0-1), z_t is the zoom lerp "time" (0-1), z_t can be negative to zoom out.
+
+	std::cout << "\n\ndouble centre_x = " << x << "; double centre_y = " << y << ";" << std::endl;
 
 	// move to new view rectangle (lerp the edges toward their new edge centered around x, y, based on m_t)
 	l = std::lerp(l, x - view_width / 2, m_t);
@@ -111,6 +114,12 @@ int main()
 				handleMouseInput();
 			}
 		}
+
+		double time = 0.01;
+
+		lerpToPos(-0.101096, 0.956302, 0.5, time);
+
+		time += 0.01;
 
 		window->clear();
 		window->draw(*mandelbrot);
