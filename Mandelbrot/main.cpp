@@ -88,11 +88,10 @@ int main()
 
 	runFarm();
 
-	sf::CircleShape xhair;
-	xhair.setFillColor(sf::Color::Green);
-	xhair.setRadius(1.0f);
-	xhair.setPosition(((float)width / 2.f) - xhair.getGlobalBounds().width / 2.f, ((float)height / 2.f) - xhair.getGlobalBounds().height / 2.f);
-
+	//sf::CircleShape xhair;
+	//xhair.setFillColor(sf::Color::Green);
+	//xhair.setRadius(1.0f);
+	//xhair.setPosition(((float)width / 2.f) - xhair.getGlobalBounds().width / 2.f, ((float)height / 2.f) - xhair.getGlobalBounds().height / 2.f);
 
 	while (window->isOpen())
 	{
@@ -114,7 +113,7 @@ int main()
 
 		window->clear();
 		window->draw(*mandelbrot);
-		window->draw(xhair);
+		//window->draw(xhair);
 		window->display();
 	}
 
