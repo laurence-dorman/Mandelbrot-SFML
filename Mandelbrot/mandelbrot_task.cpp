@@ -73,7 +73,8 @@ void MandelbrotTask::run()
 			{
 				// z didn't escape from the circle.
 				// This point is in the Mandelbrot set.
-				image_->setPixel(x, y, sf::Color(0, 0, 0)); // black
+
+				image_->setPixel(x, y, sf::Color::Black); // black
 
 			}
 			else
@@ -87,8 +88,6 @@ void MandelbrotTask::run()
 				else {
 					image_->setPixel(x, y, sf::Color::White); // get colour based on iterations
 				}
-				
-
 			}
 		}
 	}
