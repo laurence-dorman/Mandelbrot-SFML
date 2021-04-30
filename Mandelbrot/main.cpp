@@ -84,19 +84,22 @@ void lerpToPos(double x, double y, double m_t, double z_t){
 
 	updateViewSize();
 
-	// move to new view rectangle (lerp the edges toward their new edge centered around x, y, based on m_t)
-	l = std::lerp(l, x - view_width / 2, m_t);
-	r = std::lerp(r, x + view_width / 2, m_t);
-
-	t = std::lerp(t, y + view_height / 2, m_t);
-	b = std::lerp(b, y - view_height / 2, m_t);
-
 	// zoom in (lerp the edges toward eachother based on z_t)
 	l = std::lerp(l, r, z_t);
 	r = std::lerp(r, l, z_t);
 
 	t = std::lerp(t, b, z_t);
 	b = std::lerp(b, t, z_t);
+
+	updateViewSize();
+
+	// move to new view rectangle (lerp the edges toward their new edge centered around x, y, based on m_t)
+
+	l = std::lerp(l, x - view_width / 2, m_t);
+	r = std::lerp(r, x + view_width / 2, m_t);
+
+	t = std::lerp(t, y + view_height / 2, m_t);
+	b = std::lerp(b, y - view_height / 2, m_t);
 
 	updateViewSize();
 	runFarm();
