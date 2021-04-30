@@ -46,7 +46,7 @@ int scheme = 0;
 void runFarm() {
 
 	Farm farm;
-	const double num_segments = 200.0;
+	const double num_segments = screen_height;
 	const double slice = (double)height / num_segments;
 
 	for (int i = 0; i < num_segments; i++) {
