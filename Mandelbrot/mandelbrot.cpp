@@ -10,6 +10,6 @@ Mandelbrot::Mandelbrot(unsigned int width, unsigned int height)
 void Mandelbrot::update()
 {
 	texture.update(image);
-	image.saveToFile("output/output" + std::to_string(i) + ".png");
-	i++;
+	//image.saveToFile("output/output" + std::to_string(i) + ".png");
+	//i++;
 }

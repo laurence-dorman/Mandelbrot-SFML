@@ -29,16 +29,15 @@ void MandelbrotTask::run()
 				// z didn't escape from the circle.
 				// This point is in the Mandelbrot set.
 				image_->setPixel(x, y, sf::Color(0, 0, 0)); // black
-				
+
 			}
 			else
 			{
 				// z escaped within less than MAX_ITERATIONS
 				// iterations. This point isn't in the set.
 				image_->setPixel(x, y, getColour(iterations)); // get colour based on iterations
-				
-			}
 
+			}
 		}
 	}
 }
