@@ -111,15 +111,14 @@ void handleKeyboardInput()
 	bool redraw = false;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		scheme++;
+		if (scheme > num_schemes - 1) scheme = -1;
 		redraw = true;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		scheme--;
+		if (scheme < -1) scheme = num_schemes - 1;
 		redraw = true;
 	}
-
-	if (scheme > num_schemes-1) scheme = 0;
-	if (scheme < 0) scheme = num_schemes-1;
 
 	if (redraw) runFarm();
 }
@@ -157,8 +156,8 @@ int main()
 			}
 		}
 
-		//lerpToPos(-0.101096, 0.956302, 0.5, 0.01);
 		//lerpToPos(-0.17151439017639816265, 0.83499604942995442336, 0.5, 0.005);
+		//lerpToPos(-1.2102340002812257413, 0.17016643387500379747, 0.3, 0.02);
 
 		window->clear();
 		window->draw(*mandelbrot);

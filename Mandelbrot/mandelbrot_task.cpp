@@ -81,7 +81,13 @@ void MandelbrotTask::run()
 				// z escaped within less than MAX_ITERATIONS
 				// iterations. This point isn't in the set.
 
-				image_->setPixel(x, y, getColour(iterations)); // get colour based on iterations
+				if (current_scheme != -1) {
+					image_->setPixel(x, y, getColour(iterations)); // get colour based on iterations
+				}
+				else {
+					image_->setPixel(x, y, sf::Color::White); // get colour based on iterations
+				}
+				
 
 			}
 		}
@@ -98,13 +104,13 @@ sf::Color linearInterpolation(sf::Color& v, const sf::Color& u, double a) {
 sf::Color MandelbrotTask::getColour(int i)
 {
 	auto colour = colour_schemes[current_scheme];
-
+	
 	auto max_color = colour.size() - 1;
 	if (i == iterations_) i = 0;
-
+	
 	double mu = 1.0 * i / iterations_;
 	mu*= max_color;
 	auto i_mu = static_cast<size_t>(mu);
-
+	
 	return linearInterpolation(colour[i_mu], colour[std::min(i_mu + 1, max_color)], mu - i_mu);
 }
