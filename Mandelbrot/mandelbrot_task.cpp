@@ -1,6 +1,6 @@
 #include "mandelbrot_task.h"
 
-MandelbrotTask::MandelbrotTask(sf::Image* image, double left, double right, double top, double bottom, double y_start, double y_end, int iterations, int scheme) :
+MandelbrotTask::MandelbrotTask(sf::Image* image, double left, double right, double top, double bottom, double y_start, double y_end, int iterations, int scheme, unsigned int width, unsigned int height) :
 	image_(image),
 	left_(left),
 	right_(right),
@@ -9,7 +9,9 @@ MandelbrotTask::MandelbrotTask(sf::Image* image, double left, double right, doub
 	y_start_(y_start),
 	y_end_(y_end),
 	iterations_(iterations),
-	current_scheme(scheme)
+	current_scheme(scheme),
+	width_(width),
+	height_(height)
 {
 	std::vector<sf::Color> default_scheme
 	{
@@ -49,12 +51,12 @@ void MandelbrotTask::run()
 {
 	for (double y = y_start_; y < y_end_; ++y)
 	{
-		for (double x = 0; x < width; ++x)
+		for (double x = 0; x < width_; ++x)
 		{
 			// Work out the point in the complex plane that
 			// corresponds to this pixel in the output image.
-			complex<double> c(left_ + (x * (right_ - left_) / width),
-				top_ + (y * (bottom_ - top_) / height));
+			complex<double> c(left_ + (x * (right_ - left_) / width_),
+				top_ + (y * (bottom_ - top_) / height_));
 
 			// Start off z at (0, 0).
 			complex<double> z(0.0, 0.0);

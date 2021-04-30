@@ -27,6 +27,11 @@ int max_iterations = 128;
 double view_width = std::abs(r - l);
 double view_height = std::abs(t - b);
 
+unsigned int screen_height = sf::VideoMode::getDesktopMode().height*0.85;
+
+unsigned int width = screen_height;
+unsigned int height = screen_height;
+
 double zoom_iter_add = max_iterations;
 
 int num_schemes = 3;
@@ -39,13 +44,14 @@ void runFarm() {
 	const double slice = (double)height / num_segments;
 
 	for (int i = 0; i < num_segments; i++) {
-		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, scheme));
+		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, scheme, width, height));
 	}
 
 	farm.run();
 	mandelbrot->update();
 
-	std::cout << std::setprecision(20) << "double l = " << l << "; double r = " << r << "; double t = " << t << "; double b = " << b << ";" << std::endl << "int max_iterations = " << max_iterations << ";" << std::endl;;
+	//std::cout << std::setprecision(20) << "double l = " << l << "; double r = " << r << "; double t = " << t << "; double b = " << b << ";" << std::endl << "int max_iterations = " << max_iterations << ";" << std::endl;
+	std::cout << std::setprecision(20) << "Left X: " << l << "\nBottom Y: " << b << "\nWidth: " << view_width << "\nHeight: " << view_height << "\nIterations: " << max_iterations << "\nTheme: " << scheme << std::endl << std::endl;
 }
 
 void updateViewSize() {
@@ -58,7 +64,8 @@ void lerpToPos(double x, double y, double m_t, double z_t){
 
 	// x, y is the center of the new view rectangle, m_t is the movement lerp "time" (0-1), z_t is the zoom lerp "time" (0-1), z_t can be negative to zoom out.
 
-	std::cout <<  "\n\ndouble centre_x = " << x << "; double centre_y = " << y << ";" << std::endl;
+	//std::cout <<  "\n\ndouble centre_x = " << x << "; double centre_y = " << y << ";" << std::endl;
+	std::cout << "Lerping to pos: " << x << ", " << y << std::endl;
 
 	updateViewSize();
 
@@ -80,7 +87,6 @@ void lerpToPos(double x, double y, double m_t, double z_t){
 	runFarm();
 
 	zoom_iter_add += (double)100 * z_t;
-	std::cout << zoom_iter_add << std::endl;
 	max_iterations = (int)zoom_iter_add; // increase detail (max_iterations) as we zoom in, and decrease as we zoom out
 	if (max_iterations <= 0) {
 		max_iterations = 10;
@@ -114,10 +120,13 @@ void handleKeyboardInput()
 		if (scheme > num_schemes - 1) scheme = -1;
 		redraw = true;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		scheme--;
 		if (scheme < -1) scheme = num_schemes - 1;
 		redraw = true;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		window->close();
 	}
 
 	if (redraw) runFarm();
@@ -125,7 +134,7 @@ void handleKeyboardInput()
 
 int main()
 {
-	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot");
+	window = new sf::RenderWindow(sf::VideoMode(screen_height, screen_height), "Mandelbrot", sf::Style::Titlebar);
 	mandelbrot = new Mandelbrot(width, height);
 	
 	runFarm();
@@ -140,8 +149,9 @@ int main()
 		while (window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
+			{
 				window->close();
-
+			}
 			if (event.type == sf::Event::KeyPressed)
 			{
 				handleKeyboardInput();
