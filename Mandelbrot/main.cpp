@@ -46,8 +46,9 @@ int scheme = 0;
 void runFarm() {
 
 	Farm farm;
+
 	const double num_segments = screen_height;
-	const double slice = (double)height / num_segments;
+	const double slice = 1.0;
 
 	for (int i = 0; i < num_segments; i++) {
 		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, scheme, width, height));
