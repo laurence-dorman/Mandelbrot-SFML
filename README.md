@@ -11,4 +11,5 @@
 - **Scroll wheel up/down** to increase/decrease maximum iterations of the mandelbrot loop
 
 ### Example video generated with this application
-[![Mandelbrot zoom generated with this application](https://img.youtube.com/vi/qXa0MGj3NfU/0.jpg)](https://www.youtube.com/watch?v=qXa0MGj3NfU)
+
+![](doc/mandelbrot_example.gif)
