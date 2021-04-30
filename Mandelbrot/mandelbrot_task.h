@@ -15,17 +15,7 @@ const unsigned int height = 960;
 class MandelbrotTask : public Task
 {
 public:
-	MandelbrotTask(sf::Image* image, double left, double right, double top, double bottom, double y_start, double y_end, int iterations) : 
-		image_(image),
-		left_(left),
-		right_(right),
-		top_(top),
-		bottom_(bottom),
-		y_start_(y_start),
-		y_end_(y_end),
-		iterations_(iterations)
-	{
-	}
+	MandelbrotTask(sf::Image* image, double left, double right, double top, double bottom, double y_start, double y_end, int iterations, int scheme);
 
 	void run();
 
@@ -36,4 +26,9 @@ private:
 	sf::Image* image_;
 
 	sf::Color getColour(int i);
+
+	std::vector<std::vector<sf::Color>> colour_schemes;
+	
+	int current_scheme = 0;
+	
 };

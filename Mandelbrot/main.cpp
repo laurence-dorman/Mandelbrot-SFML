@@ -29,6 +29,9 @@ double view_height = std::abs(t - b);
 
 double zoom_iter_add = max_iterations;
 
+int num_schemes = 3;
+int scheme = 0;
+
 void runFarm() {
 
 	Farm farm;
@@ -36,7 +39,7 @@ void runFarm() {
 	const double slice = (double)height / num_segments;
 
 	for (int i = 0; i < num_segments; i++) {
-		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations));
+		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, scheme));
 	}
 
 	farm.run();
@@ -84,7 +87,8 @@ void lerpToPos(double x, double y, double m_t, double z_t){
 	}
 }
 
-void handleMouseInput() {
+void handleMouseInput() 
+{
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		lerpToPos(sf::Mouse::getPosition(*window).x / (double)width * view_width + l, sf::Mouse::getPosition(*window).y / (double)height * -view_height + t, 1.0, 0.3);
@@ -93,6 +97,31 @@ void handleMouseInput() {
 	{
 		lerpToPos(sf::Mouse::getPosition(*window).x / (double)width * view_width + l, sf::Mouse::getPosition(*window).y / (double)height * -view_height + t, 1.0, -0.3);
 	}
+}
+
+void handleScrollInput(sf::Event* event) 
+{
+	max_iterations += event->mouseWheelScroll.delta*10;
+	zoom_iter_add = max_iterations;
+	runFarm();
+}
+
+void handleKeyboardInput() 
+{
+	bool redraw = false;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		scheme++;
+		redraw = true;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		scheme--;
+		redraw = true;
+	}
+
+	if (scheme > num_schemes-1) scheme = 0;
+	if (scheme < 0) scheme = num_schemes-1;
+
+	if (redraw) runFarm();
 }
 
 int main()
@@ -116,11 +145,15 @@ int main()
 
 			if (event.type == sf::Event::KeyPressed)
 			{
-				
+				handleKeyboardInput();
 			}
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
 				handleMouseInput();
+			}
+			if (event.type == sf::Event::MouseWheelScrolled) 
+			{
+				handleScrollInput(&event);
 			}
 		}
 

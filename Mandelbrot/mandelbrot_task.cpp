@@ -1,6 +1,51 @@
 #include "mandelbrot_task.h"
 
-void MandelbrotTask::run() 
+MandelbrotTask::MandelbrotTask(sf::Image* image, double left, double right, double top, double bottom, double y_start, double y_end, int iterations, int scheme) :
+	image_(image),
+	left_(left),
+	right_(right),
+	top_(top),
+	bottom_(bottom),
+	y_start_(y_start),
+	y_end_(y_end),
+	iterations_(iterations),
+	current_scheme(scheme)
+{
+	std::vector<sf::Color> default_scheme
+	{
+		{0, 7, 100},		// dark blue
+		{32, 107, 203},		// light blue
+		{237, 255, 255},	// white tinted green
+		{255, 170, 0},		// orange
+		{0, 2, 0},			// black
+	};
+
+	std::vector<sf::Color> green_scheme
+	{
+		{0, 100, 7},		// dark green
+		{32, 203, 107},		// light green
+		{237, 255, 155},	// white tinted green
+		{255, 170, 0},		// orange
+		{0, 0, 0},			// black
+	};
+
+	std::vector<sf::Color> red_scheme
+	{
+		{100, 0, 7},		// dark red
+		{203, 32, 107},		// light red
+		{255, 155, 155},	// white tinted red
+		{255, 0, 255},		// pink
+		{0, 0, 0},			// black
+	};
+
+	colour_schemes.push_back(default_scheme);
+	colour_schemes.push_back(green_scheme);
+	colour_schemes.push_back(red_scheme);
+
+}
+
+
+void MandelbrotTask::run()
 {
 	for (double y = y_start_; y < y_end_; ++y)
 	{
@@ -35,6 +80,7 @@ void MandelbrotTask::run()
 			{
 				// z escaped within less than MAX_ITERATIONS
 				// iterations. This point isn't in the set.
+
 				image_->setPixel(x, y, getColour(iterations)); // get colour based on iterations
 
 			}
@@ -42,11 +88,23 @@ void MandelbrotTask::run()
 	}
 }
 
+// Mandelbrot colouring method from here https://github.com/sevity/mandelbrot/blob/master/nothing.cpp and discussed here https://stackoverflow.com/questions/16500656/which-color-gradient-is-used-to-color-mandelbrot-in-wikipedia
+
+sf::Color linearInterpolation(sf::Color& v, const sf::Color& u, double a) {
+	auto const b = 1 - a;
+	return sf::Color(b * v.r + a * u.r, b * v.g + a * u.g, b * v.b + a * u.b);
+}
+
 sf::Color MandelbrotTask::getColour(int i)
 {
-	int colourVal = (255.f / (float)iterations_) * i;
-	int blueAdd = (std::abs(colourVal - 255) < 50) ? std::abs(colourVal - 255) : 50; // adds 50 to blue value but never exceeds 255 (probably bad way of doing it)
+	auto colour = colour_schemes[current_scheme];
 
-	return sf::Color(colourVal, colourVal, colourVal + blueAdd);
+	auto max_color = colour.size() - 1;
+	if (i == iterations_) i = 0;
 
+	double mu = 1.0 * i / iterations_;
+	mu*= max_color;
+	auto i_mu = static_cast<size_t>(mu);
+
+	return linearInterpolation(colour[i_mu], colour[std::min(i_mu + 1, max_color)], mu - i_mu);
 }
