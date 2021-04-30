@@ -2,11 +2,17 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
+#include <chrono>
 
 #include "farm.h"
 #include "task.h"
 #include "mandelbrot_task.h"
 #include "mandelbrot.h"
+
+using std::chrono::duration_cast;
+using std::chrono::milliseconds;
+
+typedef std::chrono::high_resolution_clock the_clock;
 
 sf::RenderWindow* window;
 Mandelbrot* mandelbrot;
@@ -47,11 +53,28 @@ void runFarm() {
 		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, scheme, width, height));
 	}
 
+	// Start timing
+	the_clock::time_point start = the_clock::now();
+
 	farm.run();
 	mandelbrot->update();
 
+	// Stop timing
+	the_clock::time_point end = the_clock::now();
+
+	// Compute the difference between the two times in milliseconds
+	auto time_taken = duration_cast<milliseconds>(end - start).count();
+
 	//std::cout << std::setprecision(20) << "double l = " << l << "; double r = " << r << "; double t = " << t << "; double b = " << b << ";" << std::endl << "int max_iterations = " << max_iterations << ";" << std::endl;
-	std::cout << std::setprecision(20) << "Left X: " << l << "\nBottom Y: " << b << "\nWidth: " << view_width << "\nHeight: " << view_height << "\nIterations: " << max_iterations << "\nTheme: " << scheme << std::endl << std::endl;
+	std::cout << std::setprecision(20) << 
+		"Left X: " << l << 
+		"\nBottom Y: " << b << 
+		"\nWidth: " << view_width << 
+		"\nHeight: " << view_height << 
+		"\nIterations: " << max_iterations << 
+		"\nTheme: " << scheme << 
+		"\nTime taken: " << time_taken <<  "ms." << 
+		std::endl << std::endl;
 }
 
 void updateViewSize() {
