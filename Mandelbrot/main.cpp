@@ -87,11 +87,11 @@ void lerpToPos(double x, double y, double m_t, double z_t){
 void handleMouseInput() {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		lerpToPos(sf::Mouse::getPosition(*window).x / (double)width * view_width + l, sf::Mouse::getPosition(*window).y / (double)height * -view_height + t, 1.0, 0.1);
+		lerpToPos(sf::Mouse::getPosition(*window).x / (double)width * view_width + l, sf::Mouse::getPosition(*window).y / (double)height * -view_height + t, 1.0, 0.3);
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
-		lerpToPos(sf::Mouse::getPosition(*window).x / (double)width * view_width + l, sf::Mouse::getPosition(*window).y / (double)height * -view_height + t, 1.0, -0.1);
+		lerpToPos(sf::Mouse::getPosition(*window).x / (double)width * view_width + l, sf::Mouse::getPosition(*window).y / (double)height * -view_height + t, 1.0, -0.3);
 	}
 }
 
