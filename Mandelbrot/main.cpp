@@ -19,15 +19,6 @@ Mandelbrot* mandelbrot;
 
 double l = -2.25; double r = 0.75; double t = 1.5; double b = -1.5; // default
 
-//double l = -0.17160144327474860515; double r = -0.17142732819507847108; double t = 0.8350831025283045328; double b = 0.83490898744863506487; // default
-//double l = -0.603531; double r = -0.488737; double t = 0.65485; double b = 0.568753;
-//double l = -0.394687; double r = -0.378788; double t = 0.629904; double b = 0.61798;
-//double centre_x = -0.17151439017639816265; double centre_y = 0.83499604942995442336;
-//double l = -0.17151439025976980557; double r = -0.17151439009094221477; double t = 0.8349960495133261773; double b = 0.83499604934449844773;
-// 
-//int max_iterations = 1310;
-//double centre_x = -0.17151439017639816265; double centre_y = 0.83499604942995442336;
-
 int max_iterations = 128;
 
 double view_width = std::abs(r - l);
@@ -163,10 +154,6 @@ int main()
 	
 	runFarm();
 
-	//sf::CircleShape xhair;
-	//xhair.setFillColor(sf::Color::Green);
-	//xhair.setRadius(1.0f);
-	//xhair.setPosition(((float)width / 2.f) - xhair.getGlobalBounds().width / 2.f, ((float)height / 2.f) - xhair.getGlobalBounds().height / 2.f);
 	while (window->isOpen())
 	{
 		sf::Event event;
@@ -195,7 +182,6 @@ int main()
 
 		window->clear();
 		window->draw(*mandelbrot);
-		//window->draw(xhair);
 		window->display();
 	}
 
