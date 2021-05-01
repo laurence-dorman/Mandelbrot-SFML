@@ -10,6 +10,8 @@
 
 - **Scroll wheel up/down** to increase/decrease maximum iterations of the mandelbrot loop
 
+- **L** to initiate animation, then console keyboard input to set it up.
+
 ### Example video generated with this application
 
 ![](doc/mandelbrot_example.gif)
