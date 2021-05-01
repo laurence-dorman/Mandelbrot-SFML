@@ -10,7 +10,7 @@
 
 - **Scroll wheel up/down** to increase/decrease maximum iterations of the mandelbrot loop
 
-- **L** to initiate animation, then console keyboard input to set it up.
+- **L** to initiate animation, then console keyboard input to set it up. If you wish to zoom to mouse location, place mouse on desired location first, then press L and then enter "1" when you are prompted to use mouse location.
 
 - **R** to reset to initial position and zoom
 
