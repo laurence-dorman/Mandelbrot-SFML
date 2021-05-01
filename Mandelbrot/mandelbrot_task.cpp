@@ -40,9 +40,22 @@ MandelbrotTask::MandelbrotTask(sf::Image* image, double left, double right, doub
 		{0, 0, 0},			// black
 	};
 
+	srand(time(NULL));
+
+	std::vector<sf::Color> random_scheme
+	{
+		// random values
+		{sf::Uint8(rand() + 255), sf::Uint8(rand() + 255), sf::Uint8(rand() + 255)},
+		{sf::Uint8(rand() + 255), sf::Uint8(rand() + 255), sf::Uint8(rand() + 255)},
+		{sf::Uint8(rand() + 255), sf::Uint8(rand() + 255), sf::Uint8(rand() + 255)},
+		{sf::Uint8(rand() + 255), sf::Uint8(rand() + 255), sf::Uint8(rand() + 255)},
+		{sf::Uint8(rand() + 255), sf::Uint8(rand() + 255), sf::Uint8(rand() + 255)},
+	};
+
 	colour_schemes.push_back(default_scheme);
 	colour_schemes.push_back(green_scheme);
 	colour_schemes.push_back(red_scheme);
+	colour_schemes.push_back(random_scheme);
 
 }
 

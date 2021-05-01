@@ -34,7 +34,7 @@ unsigned int width = screen_height;
 unsigned int height = screen_height;
 
 // colour schemes
-int num_schemes = 3;
+int num_schemes = 4;
 int scheme = 0;
 
 // vars for animations
@@ -87,7 +87,8 @@ void updateViewSize() {
 	view_height = std::abs(t - b);
 }
 
-void reset() {
+void reset() { 
+	// reset to initial square
 	l = -2.25; r = 0.75; t = 1.5; b = -1.5;
 	max_iterations = 128;
 	zoom_iter_add = max_iterations;
@@ -133,7 +134,7 @@ void lerpToPos(double x, double y, double m_t, double z_t){
 }
 
 void runAnimation(int frames, double m_t, double z_t) {
-
+	// creates frames for an animation and saves to output folder
 	if (frames_done < frames) {
 		if (frames_done == 0) {
 
@@ -158,17 +159,17 @@ void runAnimation(int frames, double m_t, double z_t) {
 
 			double u_input;
 			std::cin >> u_input;
-			zoom_time = u_input / 150;
+			zoom_time = u_input / 150; // will be used in lerp function
 
 			std::cout << "\nEnter the filename\n>> ";
 			std::cin >> file_name;
 
-			start_animation = the_clock::now();
+			start_animation = the_clock::now(); // start timer
 	
-			reset();
+			reset(); // go to start
 		}
-		lerpToPos(pos_x, pos_y, m_t, z_t);
-		frames_done++;
+		lerpToPos(pos_x, pos_y, m_t, z_t); // lerp to pos
+		frames_done++; // incrase frames done
 	}
 	else {
 		// Stop timing
@@ -186,10 +187,10 @@ void runAnimation(int frames, double m_t, double z_t) {
 }
 
 void handleMouseInput() 
-{
+{	// convert click location on window to coordinates inside the mandelbrot square and then lerp to it
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		lerpToPos(sf::Mouse::getPosition(*window).x / (double)width * view_width + l, sf::Mouse::getPosition(*window).y / (double)height * -view_height + t, 1.0, 0.3);
+		lerpToPos(sf::Mouse::getPosition(*window).x / (double)width * view_width + l, sf::Mouse::getPosition(*window).y / (double)height * -view_height + t, 1.0, 0.3); 
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{

@@ -13,21 +13,21 @@ Mandelbrot::Mandelbrot(unsigned int width, unsigned int height)
 
 void Mandelbrot::update(bool save, std::string fn)
 {
-	texture.update(image);
+	texture.update(image); // update texture
 
 	if (save) {
 		std::cout << "Saving image to output/" + fn + std::to_string(i) + ".png" << std::endl;
 
-		if (!folder_created) {
+		if (!folder_created) { // create output folder
 			success = _mkdir(path_c);
 			folder_created = true;
 		}
 
-		if (!image.saveToFile("output/" + fn + std::to_string(i) + ".png")){
+		if (!image.saveToFile("output/" + fn + std::to_string(i) + ".png")){ // if we cant create files inside new folder for some reason, just save them in the root directory
 			std::cout << "\nCould not find output folder! Writing to current directory instead.\n";
 			std::cout << "Saving image to " + fn + std::to_string(i) + ".png" << std::endl;
 			image.saveToFile(fn + std::to_string(i) + ".png");
 		}
-		i++;
+		i++; // increment i (used in filename)
 	}
 }

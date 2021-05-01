@@ -26,6 +26,7 @@ private:
 
 	sf::Color getColour(int i);
 
+	// vector that holds vectors of sf::Colors, so we can switch between different themes
 	std::vector<std::vector<sf::Color>> colour_schemes;
 	
 	int current_scheme = 0;
