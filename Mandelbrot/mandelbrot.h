@@ -9,7 +9,7 @@ public:
 
 	Mandelbrot(unsigned int width, unsigned int height);
 
-	void update();
+	void update(bool save, std::string fn);
 
 	sf::Image* getImage() { return &image; };
 

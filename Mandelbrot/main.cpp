@@ -17,22 +17,34 @@ typedef std::chrono::high_resolution_clock the_clock;
 sf::RenderWindow* window;
 Mandelbrot* mandelbrot;
 
+// initial values for view square
 double l = -2.25; double r = 0.75; double t = 1.5; double b = -1.5; // default
 
+// initial max_iterations value and value for zooming
 int max_iterations = 128;
+double zoom_iter_add = max_iterations;
 
+// setup view vars to be the difference between r,l and t,b for width and height respectively
 double view_width = std::abs(r - l);
 double view_height = std::abs(t - b);
 
+// set window size to be a square 85% of window height
 unsigned int screen_height = sf::VideoMode::getDesktopMode().height*0.85;
-
 unsigned int width = screen_height;
 unsigned int height = screen_height;
 
-double zoom_iter_add = max_iterations;
-
+// colour schemes
 int num_schemes = 3;
 int scheme = 0;
+
+// vars for animation
+bool lerping = false;
+int frames_done = 0;
+int num_frames = 20;
+double pos_x = 0, pos_y = 0;
+double zoom_time = 0.01;
+std::string file_name = "output";
+the_clock::time_point start_animation;
 
 void runFarm() {
 
@@ -49,7 +61,7 @@ void runFarm() {
 	the_clock::time_point start = the_clock::now();
 
 	farm.run();
-	mandelbrot->update();
+	mandelbrot->update(lerping, file_name);
 
 	// Stop timing
 	the_clock::time_point end = the_clock::now();
@@ -73,6 +85,15 @@ void updateViewSize() {
 	// update view size variables since these will change everytime we move/zoom
 	view_width = std::abs(r - l);
 	view_height = std::abs(t - b);
+}
+
+void reset() {
+	l = -2.25; r = 0.75; t = 1.5; b = -1.5;
+	max_iterations = 128;
+	zoom_iter_add = max_iterations;
+
+	updateViewSize();
+	runFarm();
 }
 
 void lerpToPos(double x, double y, double m_t, double z_t){
@@ -111,6 +132,59 @@ void lerpToPos(double x, double y, double m_t, double z_t){
 	}
 }
 
+void runAnimation(int frames, double m_t, double z_t) {
+
+	if (frames_done < frames) {
+		if (frames_done == 0) {
+
+			pos_x = sf::Mouse::getPosition(*window).x / (double)width * view_width + l;
+			pos_y = sf::Mouse::getPosition(*window).y / (double)height * -view_height + t;
+
+			int u_i;
+			std::cout << "\nWould you like to use click location? (0 = no, 1 = yes)\n>> ";
+			std::cin >> u_i;
+
+			if (u_i == 0) {
+				std::cout << "Enter the X position of your desired location\n>> ";
+				std::cin >> pos_x;
+				std::cout << "Enter the Y position of your desired location\n>> ";
+				std::cin >> pos_y;
+			}
+
+			std::cout << "\nEnter the amount of frames for the animation\n>> ";
+			std::cin >> num_frames;
+
+			std::cout << "\nEnter how much you want to zoom in per frame (0-100)\n>> ";
+
+			double u_input;
+			std::cin >> u_input;
+			zoom_time = u_input / 100;
+
+			std::cout << "\nEnter the filename\n>> ";
+			std::cin >> file_name;
+
+			start_animation = the_clock::now();
+	
+			reset();
+		}
+		lerpToPos(pos_x, pos_y, m_t, z_t);
+		frames_done++;
+	}
+	else {
+		// Stop timing
+		the_clock::time_point end = the_clock::now();
+
+		// Compute the difference between the two times in milliseconds
+		auto time_taken = duration_cast<milliseconds>(end - start_animation).count();
+
+		std::cout << "Total time taken for animation: " << time_taken << "ms.\n\n";
+
+		lerping = false;
+		frames_done = 0;
+		reset();
+	}
+}
+
 void handleMouseInput() 
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -142,6 +216,14 @@ void handleKeyboardInput()
 		scheme--;
 		if (scheme < -1) scheme = num_schemes - 1;
 		redraw = true;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+		reset();
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+		if (lerping == false) {
+			lerping = true;
+		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 		window->close();
@@ -182,6 +264,10 @@ int main()
 
 		//lerpToPos(-0.17151439017639816265, 0.83499604942995442336, 0.5, 0.005);
 		//lerpToPos(-1.2102340002812257413, 0.17016643387500379747, 0.3, 0.02);
+
+		if (lerping) {
+			runAnimation(num_frames, 1.0, zoom_time);
+		}
 
 		window->clear();
 		window->draw(*mandelbrot);
