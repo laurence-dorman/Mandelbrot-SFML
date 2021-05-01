@@ -141,7 +141,7 @@ void runAnimation(int frames, double m_t, double z_t) {
 			pos_y = sf::Mouse::getPosition(*window).y / (double)height * -view_height + t;
 
 			int u_i;
-			std::cout << "\nWould you like to use click location? (0 = no, 1 = yes)\n>> ";
+			std::cout << "\nWould you like to use mouse location? (0 = no, 1 = yes)\n>> ";
 			std::cin >> u_i;
 
 			if (u_i == 0) {
