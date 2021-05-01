@@ -154,11 +154,11 @@ void runAnimation(int frames, double m_t, double z_t) {
 			std::cout << "\nEnter the amount of frames for the animation\n>> ";
 			std::cin >> num_frames;
 
-			std::cout << "\nEnter how much you want to zoom in per frame (0-100)\n>> ";
+			std::cout << "\nEnter how much you want to zoom in per frame (recommended 0-100)\n>> ";
 
 			double u_input;
 			std::cin >> u_input;
-			zoom_time = u_input / 100;
+			zoom_time = u_input / 150;
 
 			std::cout << "\nEnter the filename\n>> ";
 			std::cin >> file_name;
