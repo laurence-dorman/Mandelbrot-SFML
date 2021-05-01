@@ -14,7 +14,12 @@ void Mandelbrot::update(bool save, std::string fn)
 
 	if (save) {
 		std::cout << "Saving image to output/" + fn + std::to_string(i) + ".png" << std::endl;
-		image.saveToFile("output/" + fn + std::to_string(i) + ".png");
-		i++;
+
+		if (!image.saveToFile("output/" + fn + std::to_string(i) + ".png")){
+			std::cout << "\nCould not find output folder! Writing to current directory instead.\n";
+			std::cout << "Saving image to " + fn + std::to_string(i) + ".png" << std::endl;
+			image.saveToFile(fn + std::to_string(i) + ".png");
+			i++;
+		}
 	}
 }
