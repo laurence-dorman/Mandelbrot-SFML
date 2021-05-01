@@ -19,5 +19,11 @@ private:
 
 	int i = 0;
 
+	std::string folder = "output";
+	bool folder_created = false;
+	const char* path_c;
+
+	int success = 0;
+
 };
 

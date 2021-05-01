@@ -37,7 +37,7 @@ unsigned int height = screen_height;
 int num_schemes = 3;
 int scheme = 0;
 
-// vars for animation
+// vars for animations
 bool lerping = false;
 int frames_done = 0;
 int num_frames = 20;
