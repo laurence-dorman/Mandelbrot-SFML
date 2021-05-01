@@ -12,6 +12,8 @@
 
 - **L** to initiate animation, then console keyboard input to set it up.
 
+- **R** to reset to initial position and zoom
+
 ### Example video generated with this application
 
 ![](doc/mandelbrot_example.gif)
