@@ -16,6 +16,8 @@
 
 - **1, 2** to switch between Mandelbrot and Multibrot (negative exponent) mode respectively.
 
-### Example video generated with this application
+### Example videos generated with this application
 
 ![](doc/mandelbrot_example.gif)
+
+![](doc/multibrot-example.gif)
