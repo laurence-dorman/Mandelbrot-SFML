@@ -14,6 +14,8 @@
 
 - **R** to reset to initial position and zoom
 
+**1, 2** to switch between Mandelbrot and Multibrot (negative exponent) mode respectively.
+
 ### Example video generated with this application
 
 ![](doc/mandelbrot_example.gif)
