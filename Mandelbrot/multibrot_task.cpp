@@ -1,6 +1,6 @@
-#include "mandelbrot_task.h"
+#include "multibrot_task.h"
 
-MandelbrotTask::MandelbrotTask(sf::Image* image, double left, double right, double top, double bottom, double y_start, double y_end, int iterations, int scheme, unsigned int width, unsigned int height, std::vector<std::vector<sf::Color>>& c_schemes) :
+MultibrotTask::MultibrotTask(sf::Image* image, double left, double right, double top, double bottom, double y_start, double y_end, int iterations, int scheme, unsigned int width, unsigned int height, std::vector<std::vector<sf::Color>>& c_schemes) :
 	image_(image),
 	left_(left),
 	right_(right),
@@ -14,10 +14,9 @@ MandelbrotTask::MandelbrotTask(sf::Image* image, double left, double right, doub
 	height_(height),
 	colour_schemes_ptr(&c_schemes)
 {
-
 }
 
-void MandelbrotTask::run()
+void MultibrotTask::run()
 {
 	for (double y = y_start_; y < y_end_; ++y)
 	{
@@ -28,23 +27,23 @@ void MandelbrotTask::run()
 			complex<double> c(left_ + (x * (right_ - left_) / width_),
 				top_ + (y * (bottom_ - top_) / height_));
 
-			// Start off z at (0, 0).
-			complex<double> z(0.0, 0.0);
 
-			// Iterate z = z^2 + c until z moves more than 2 units
+			// Start off z at (-1, 0).
+			complex<double> z(-1.0, 0.0);
+
+			// Iterate z = z^-6 + c until z moves more than 2 units
 			// away from (0, 0), or we've iterated too many times.
 			int iterations = 0;
 			while (abs(z) < 2.0 && iterations < iterations_)
 			{
-				z = (z * z) + c;
-
+				z = 1.0/(z*z*z*z*z*z) + c;
 				++iterations;
 			}
 
 			if (iterations == iterations_)
 			{
 				// z didn't escape from the circle.
-				// This point is in the Mandelbrot set.
+				// This point is in the Multibrot set.
 
 				image_->setPixel(x, y, sf::Color::Black); // black
 
@@ -65,18 +64,17 @@ void MandelbrotTask::run()
 	}
 }
 
-// Mandelbrot colouring method from here https://github.com/sevity/mandelbrot/blob/master/nothing.cpp and discussed here https://stackoverflow.com/questions/16500656/which-color-gradient-is-used-to-color-mandelbrot-in-wikipedia
 
-sf::Color MandelbrotTask::getColour(int i)
+sf::Color MultibrotTask::getColour(int i)
 {
 	auto colour = (*colour_schemes_ptr)[current_scheme];
-	
+
 	auto max_color = colour.size() - 1;
 	if (i == iterations_) i = 0;
-	
+
 	double mu = 1.0 * i / iterations_;
-	mu*= max_color;
+	mu *= max_color;
 	auto i_mu = static_cast<size_t>(mu);
-	
+
 	return linearInterpolation(colour[i_mu], colour[std::min(i_mu + 1, max_color)], mu - i_mu);
 }

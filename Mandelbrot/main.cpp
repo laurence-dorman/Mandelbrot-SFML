@@ -7,6 +7,7 @@
 #include "farm.h"
 #include "task.h"
 #include "mandelbrot_task.h"
+#include "multibrot_task.h"
 #include "mandelbrot.h"
 
 using std::chrono::duration_cast;
@@ -15,7 +16,9 @@ using std::chrono::milliseconds;
 typedef std::chrono::high_resolution_clock the_clock;
 
 sf::RenderWindow* window;
-Mandelbrot* mandelbrot;
+Mandelbrot* fractal;
+
+int mode = 1; // mandelbrot is 1, multibrot is 2
 
 // initial values for view square
 double l = -2.25; double r = 0.75; double t = 1.5; double b = -1.5; // default
@@ -34,7 +37,8 @@ unsigned int width = screen_height;
 unsigned int height = screen_height;
 
 // colour schemes
-int num_schemes = 4;
+std::vector<std::vector<sf::Color>> colour_schemes;
+int num_schemes;
 int scheme = 0;
 
 // vars for animations
@@ -46,6 +50,69 @@ double zoom_time = 0.01;
 std::string file_name = "output";
 the_clock::time_point start_animation;
 
+void addRandomScheme() {
+	int num_colours = rand() % 20 + 3; // how many rows
+
+	std::vector<sf::Color> new_scheme;
+
+	for (int i = 0; i < num_colours; i++) {
+		new_scheme.push_back({ generateColour(), generateColour(), generateColour() }); // rgb
+	}
+
+	colour_schemes.push_back(new_scheme);
+
+	num_schemes++;
+}
+
+void initColourSchemes() {
+	std::vector<sf::Color> default_scheme
+	{
+		{0, 7, 100},		// dark blue
+		{32, 107, 203},		// light blue
+		{237, 255, 255},	// white tinted green
+		{255, 170, 0},		// orange
+		{0, 2, 0},			// black
+	};
+
+	std::vector<sf::Color> green_scheme
+	{
+		{0, 100, 7},		// dark green
+		{32, 203, 107},		// light green
+		{237, 255, 155},	// white tinted green
+		{255, 170, 0},		// orange
+		{0, 0, 0},			// black
+	};
+
+	std::vector<sf::Color> red_scheme
+	{
+		{100, 0, 7},		// dark red
+		{203, 32, 107},		// light red
+		{255, 155, 155},	// white tinted red
+		{255, 0, 255},		// pink
+		{0, 0, 0},			// black
+	};
+
+	std::vector<sf::Color> purple_scheme
+	{
+		{128, 0, 128},		// dark purple
+		{255,255,25},		// laser lemon
+		{57, 255, 20},		// neon green
+		{128, 0, 128},		// dark purple
+		{0, 2, 0},			// black
+	};
+
+	srand(time(NULL));
+
+	colour_schemes.push_back(default_scheme);	// 0
+	colour_schemes.push_back(green_scheme);		// 1
+	colour_schemes.push_back(red_scheme);		// 2
+	colour_schemes.push_back(purple_scheme);	// 3
+	addRandomScheme();							// 4
+
+	num_schemes = colour_schemes.size();
+}
+
+
 void runFarm() {
 
 	Farm farm;
@@ -54,14 +121,23 @@ void runFarm() {
 	const double slice = 1.0;
 
 	for (int i = 0; i < num_segments; i++) {
-		farm.add_task(new MandelbrotTask(mandelbrot->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, scheme, width, height));
+		switch (mode) 
+		{
+			case 1:
+				farm.add_task(new MandelbrotTask(fractal->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, scheme, width, height, colour_schemes));
+			break;
+
+			case 2:
+				farm.add_task(new MultibrotTask(fractal->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, scheme, width, height, colour_schemes));
+			break;
+		}
 	}
 
 	// Start timing
 	the_clock::time_point start = the_clock::now();
 
 	farm.run();
-	mandelbrot->update(lerping, file_name);
+	fractal->update(lerping, file_name);
 
 	// Stop timing
 	the_clock::time_point end = the_clock::now();
@@ -71,7 +147,8 @@ void runFarm() {
 
 	//std::cout << std::setprecision(20) << "double l = " << l << "; double r = " << r << "; double t = " << t << "; double b = " << b << ";" << std::endl << "int max_iterations = " << max_iterations << ";" << std::endl;
 	std::cout << std::setprecision(20) << 
-		"Left X: " << l << 
+		"Mode: " << mode <<
+		"\nLeft X: " << l << 
 		"\nBottom Y: " << b << 
 		"\nWidth: " << view_width << 
 		"\nHeight: " << view_height << 
@@ -226,6 +303,19 @@ void handleKeyboardInput()
 			lerping = true;
 		}
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
+		addRandomScheme();
+		scheme = colour_schemes.size()-1;
+		runFarm();
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
+		mode = 1;
+		runFarm();
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+		mode = 2;
+		runFarm();
+	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 		window->close();
 	}
@@ -236,8 +326,10 @@ void handleKeyboardInput()
 int main()
 {
 	window = new sf::RenderWindow(sf::VideoMode(screen_height, screen_height), "Mandelbrot", sf::Style::Titlebar);
-	mandelbrot = new Mandelbrot(width, height);
+	fractal = new Mandelbrot(width, height);
 	
+	initColourSchemes();
+
 	runFarm();
 
 	while (window->isOpen())
@@ -271,7 +363,7 @@ int main()
 		}
 
 		window->clear();
-		window->draw(*mandelbrot);
+		window->draw(*fractal);
 		window->display();
 	}
 
