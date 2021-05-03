@@ -7,7 +7,9 @@
 
 using std::complex;
 
-/** Task that computes a portion of a mandelbrot */
+/** Task that computes a portion of a mandelbrot 
+
+*/
 class MandelbrotTask : public Task
 {
 public:

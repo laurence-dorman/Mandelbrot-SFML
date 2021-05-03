@@ -9,17 +9,18 @@ void Farm::add_task(Task* task)
 
 void Farm::run()
 {
-	const int num_threads = std::thread::hardware_concurrency();
+	const int num_threads = std::thread::hardware_concurrency(); // function returns num of CPUs
 	std::vector<std::thread*> threads_vec;
 
 	for (int i = 0; i < num_threads; i++) {
 		threads_vec.push_back(new std::thread([&]
 			{
 				while (!queue_.empty()) {
-					std::mutex queue_mutex;
-					queue_mutex.lock();
 
 					Task* task;
+
+					std::mutex queue_mutex;
+					queue_mutex.lock();
 
 					task = queue_.front();
 					queue_.pop();

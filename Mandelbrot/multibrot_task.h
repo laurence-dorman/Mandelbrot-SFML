@@ -8,7 +8,7 @@
 using std::complex;
 
 /** Task that computes a portion of a Multibrot set
-https://en.wikipedia.org/wiki/Multibrot_set
+https://en.wikipedia.org/wiki/Mandelbrot_set
 */
 class MultibrotTask : public Task
 {

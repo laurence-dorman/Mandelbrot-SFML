@@ -50,8 +50,11 @@ double zoom_time = 0.01;
 std::string file_name = "output";
 the_clock::time_point start_animation;
 
-void addRandomScheme() {
-	int num_colours = rand() % 20 + 3; // how many rows
+void addRandomScheme(int rows) {
+	int num_colours = rows;
+	if (rows == 0) {
+		num_colours = rand() % 30 + 3; // how many rows
+	}
 
 	std::vector<sf::Color> new_scheme;
 
@@ -64,7 +67,7 @@ void addRandomScheme() {
 	num_schemes++;
 }
 
-void initColourSchemes() {
+void initColourSchemes() { // setup initial colour schemes
 	std::vector<sf::Color> default_scheme
 	{
 		{0, 7, 100},		// dark blue
@@ -107,7 +110,7 @@ void initColourSchemes() {
 	colour_schemes.push_back(green_scheme);		// 1
 	colour_schemes.push_back(red_scheme);		// 2
 	colour_schemes.push_back(purple_scheme);	// 3
-	addRandomScheme();							// 4
+	addRandomScheme(0);							// 4
 
 	num_schemes = colour_schemes.size();
 }
@@ -117,8 +120,8 @@ void runFarm() {
 
 	Farm farm;
 
-	const double num_segments = screen_height;
-	const double slice = 1.0;
+	const double num_segments = height;
+	const double slice = (double)height/num_segments;
 
 	for (int i = 0; i < num_segments; i++) {
 		switch (mode) 
@@ -304,7 +307,10 @@ void handleKeyboardInput()
 		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
-		addRandomScheme();
+		int u_in_rows = 0;
+		std::cout << "Enter how many colours you want in the theme, or enter 0 for a random amount.\n>> ";
+		std::cin >> u_in_rows;
+		addRandomScheme(u_in_rows);
 		scheme = colour_schemes.size()-1;
 		runFarm();
 	}
@@ -325,7 +331,7 @@ void handleKeyboardInput()
 
 int main()
 {
-	window = new sf::RenderWindow(sf::VideoMode(screen_height, screen_height), "Mandelbrot", sf::Style::Titlebar);
+	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot", sf::Style::Titlebar);
 	fractal = new Mandelbrot(width, height);
 	
 	initColourSchemes();
