@@ -3,11 +3,11 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-class Mandelbrot : public sf::Sprite
+class Fractal : public sf::Sprite
 {
 public:
 
-	Mandelbrot(unsigned int width, unsigned int height);
+	Fractal(unsigned int width, unsigned int height);
 
 	void update(bool save, std::string fn);
 

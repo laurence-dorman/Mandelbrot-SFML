@@ -1,8 +1,8 @@
-#include "mandelbrot.h"
+#include "fractal.h"
 #include <iostream>
 #include<direct.h>
 
-Mandelbrot::Mandelbrot(unsigned int width, unsigned int height)
+Fractal::Fractal(unsigned int width, unsigned int height)
 {
 	texture.create(width, height);
 	image.create(width, height, sf::Color(0, 0, 0));
@@ -11,7 +11,7 @@ Mandelbrot::Mandelbrot(unsigned int width, unsigned int height)
 	path_c = folder.c_str();
 }
 
-void Mandelbrot::update(bool save, std::string fn)
+void Fractal::update(bool save, std::string fn)
 {
 	texture.update(image); // update texture
 

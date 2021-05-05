@@ -27,7 +27,7 @@
     <ClCompile Include="mandelbrot_task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mandelbrot.cpp">
+    <ClCompile Include="fractal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="multibrot_task.cpp">
@@ -44,7 +44,7 @@
     <ClInclude Include="mandelbrot_task.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mandelbrot.h">
+    <ClInclude Include="fractal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="multibrot_task.h">

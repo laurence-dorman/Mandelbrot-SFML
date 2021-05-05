@@ -152,14 +152,14 @@
     <ClCompile Include="farm.cpp" />
     <ClCompile Include="multibrot_task.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mandelbrot.cpp" />
+    <ClCompile Include="fractal.cpp" />
     <ClCompile Include="mandelbrot_task.cpp" />
     <ClCompile Include="task.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="farm.h" />
     <ClInclude Include="multibrot_task.h" />
-    <ClInclude Include="mandelbrot.h" />
+    <ClInclude Include="fractal.h" />
     <ClInclude Include="mandelbrot_task.h" />
     <ClInclude Include="task.h" />
     <ClInclude Include="utils.h" />

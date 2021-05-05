@@ -8,7 +8,7 @@
 #include "task.h"
 #include "mandelbrot_task.h"
 #include "multibrot_task.h"
-#include "mandelbrot.h"
+#include "fractal.h"
 
 using std::chrono::duration_cast;
 using std::chrono::milliseconds;
@@ -16,7 +16,7 @@ using std::chrono::milliseconds;
 typedef std::chrono::high_resolution_clock the_clock;
 
 sf::RenderWindow* window;
-Mandelbrot* fractal;
+Fractal* fractal;
 
 int mode = 1; // mandelbrot is 1, multibrot is 2
 
@@ -332,7 +332,7 @@ void handleKeyboardInput()
 int main()
 {
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot", sf::Style::Titlebar);
-	fractal = new Mandelbrot(width, height);
+	fractal = new Fractal(width, height);
 	
 	initColourSchemes();
 
