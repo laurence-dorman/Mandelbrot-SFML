@@ -55,10 +55,6 @@ ColourManager::ColourManager()
 	num_schemes = colour_schemes.size();
 }
 
-ColourManager::~ColourManager()
-{
-}
-
 void ColourManager::addRandomScheme(int rows)
 {
 	int num_colours = rows;

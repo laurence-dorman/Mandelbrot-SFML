@@ -8,7 +8,6 @@ class ColourManager
 {
 public:
 	ColourManager();
-	~ColourManager();
 
 	void addRandomScheme(int rows);
 	bool handleInput();
