@@ -101,7 +101,7 @@ bool ColourManager::handleInput()
 	return false;
 }
 
-std::vector<std::vector<sf::Color>> ColourManager::getSchemesVec()
+std::vector<std::vector<sf::Color>> *ColourManager::getSchemesVec()
 {
-	return colour_schemes;
+	return &colour_schemes;
 }

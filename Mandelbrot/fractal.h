@@ -9,7 +9,7 @@ public:
 
 	Fractal(unsigned int width, unsigned int height);
 
-	void update(bool save, std::string fn);
+	void update(bool save, const char* fn);
 
 	sf::Image* getImage() { return &image; };
 

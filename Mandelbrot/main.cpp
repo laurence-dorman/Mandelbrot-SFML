@@ -20,7 +20,6 @@ sf::RenderWindow* window;
 Fractal* fractal;
 ColourManager* colourManager;
 
-
 int mode = 1; // mandelbrot is 1, multibrot is 2
 
 // initial values for view square
@@ -45,8 +44,9 @@ int frames_done = 0;
 int num_frames = 20;
 double pos_x = 0, pos_y = 0;
 double zoom_time = 0.01;
-std::string file_name = "output";
 the_clock::time_point start_animation;
+
+std::string file_name = "output";
 
 void runFarm() {
 
@@ -59,11 +59,11 @@ void runFarm() {
 		switch (mode) 
 		{
 			case 1:
-				farm.add_task(new MandelbrotTask(fractal->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, colourManager->current_scheme, width, height, colourManager->colour_schemes));
+				farm.add_task(new MandelbrotTask(fractal->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, colourManager->current_scheme, width, height, *colourManager->getSchemesVec()));
 			break;
 
 			case 2:
-				farm.add_task(new MultibrotTask(fractal->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, colourManager->current_scheme, width, height, colourManager->colour_schemes));
+				farm.add_task(new MultibrotTask(fractal->getImage(), l, r, t, b, i * slice, i * slice + slice, max_iterations, colourManager->current_scheme, width, height, *colourManager->getSchemesVec()));
 			break;
 		}
 	}
@@ -72,7 +72,7 @@ void runFarm() {
 	the_clock::time_point start = the_clock::now();
 
 	farm.run();
-	fractal->update(lerping, file_name);
+	fractal->update(lerping, file_name.c_str());
 
 	// Stop timing
 	the_clock::time_point end = the_clock::now();
@@ -80,7 +80,6 @@ void runFarm() {
 	// Compute the difference between the two times in milliseconds
 	auto time_taken = duration_cast<milliseconds>(end - start).count();
 
-	//std::cout << std::setprecision(20) << "double l = " << l << "; double r = " << r << "; double t = " << t << "; double b = " << b << ";" << std::endl << "int max_iterations = " << max_iterations << ";" << std::endl;
 	std::cout << std::setprecision(20) << 
 		"Mode: " << mode <<
 		"\nLeft X: " << l << 
@@ -223,11 +222,11 @@ void handleKeyboardInput()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
 		mode = 1;
-		runFarm();
+		redraw = true;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
 		mode = 2;
-		runFarm();
+		redraw = true;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
 		reset();
@@ -246,7 +245,7 @@ void handleKeyboardInput()
 
 int main()
 {
-	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot", sf::Style::Titlebar);
+	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot " + std::to_string(width) + "x" + std::to_string(height), sf::Style::Titlebar);
 	fractal = new Fractal(width, height);
 
 	colourManager = new ColourManager();

@@ -13,17 +13,14 @@ public:
 	void addRandomScheme(int rows);
 	bool handleInput();
 
-	std::vector<std::vector<sf::Color>> getSchemesVec();
+	std::vector<std::vector<sf::Color>> *getSchemesVec();
 
 	int current_scheme;
 	int num_schemes;
 
-	std::vector<std::vector<sf::Color>> colour_schemes;
-
-
 private:
 
-	
+	std::vector<std::vector<sf::Color>> colour_schemes;
 	
 };
 

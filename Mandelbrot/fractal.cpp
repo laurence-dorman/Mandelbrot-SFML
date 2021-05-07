@@ -1,6 +1,6 @@
 #include "fractal.h"
 #include <iostream>
-#include<direct.h>
+#include <direct.h>
 
 Fractal::Fractal(unsigned int width, unsigned int height) :
 	i(0)
@@ -14,17 +14,18 @@ Fractal::Fractal(unsigned int width, unsigned int height) :
 	}
 }
 
-void Fractal::update(bool save, std::string fn)
+void Fractal::update(bool save, const char* fn)
 {
 	texture.update(image); // update texture
 
 	if (save) {
-		std::cout << "Saving image to output/" + fn + std::to_string(i) + ".png" << std::endl;
+		std::string s_fn(fn);
+		std::cout << "Saving image to output/" + s_fn + std::to_string(i) + ".png" << std::endl;
 
-		if (!image.saveToFile("output/" + fn + std::to_string(i) + ".png")){ // if we cant create files inside new folder for some reason, just save them in the root directory
+		if (!image.saveToFile("output/" + s_fn + std::to_string(i) + ".png")){ // if we cant create files inside new folder for some reason, just save them in the root directory
 			std::cout << "\nCould not find output folder! Writing to current directory instead.\n";
-			std::cout << "Saving image to " + fn + std::to_string(i) + ".png" << std::endl;
-			image.saveToFile(fn + std::to_string(i) + ".png");
+			std::cout << "Saving image to " + s_fn + std::to_string(i) + ".png" << std::endl;
+			image.saveToFile(s_fn + std::to_string(i) + ".png");
 		}
 		i++; // increment i (used in filename)
 	}
