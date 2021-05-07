@@ -2,12 +2,9 @@
 #include <iostream>
 #include <chrono>
 
-#include "fractal.h"
 #include "fractal_manager.h"
 
 sf::RenderWindow* window;
-Fractal* fractal_;
-ColourManager* colourManager;
 FractalManager* fractalManager;
 
 // set window size to be a square 85% of window height
@@ -15,13 +12,11 @@ unsigned int screen_height = sf::VideoMode::getDesktopMode().height*0.85;
 unsigned int width = screen_height;
 unsigned int height = screen_height;
 
-
 int main()
 {
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot " + std::to_string(width) + "x" + std::to_string(height), sf::Style::Titlebar);
 
-	fractal_ = new Fractal(width, height);
-	fractalManager = new FractalManager(fractal_, window);
+	fractalManager = new FractalManager(window);
 
 	fractalManager->runFarm();
 
@@ -51,7 +46,7 @@ int main()
 		fractalManager->update();
 
 		window->clear();
-		window->draw(*fractal_);
+		window->draw(*fractalManager->getFractal());
 		window->display();
 	}
 

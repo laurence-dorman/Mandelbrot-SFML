@@ -13,9 +13,10 @@ typedef std::chrono::high_resolution_clock the_clock;
 using std::chrono::duration_cast;
 using std::chrono::milliseconds;
 
-FractalManager::FractalManager(Fractal* f, sf::Window* window) :
-	fractal_(f),
+FractalManager::FractalManager(sf::Window* window) :
 	window_(window),
+	width_(window_->getSize().x),
+	height_(window_->getSize().y),
 	max_iterations_(128),
 	zoom_iter_add_(max_iterations_),
 	mode_(1), // mandelbrot is 1, multibrot is 2
@@ -34,9 +35,7 @@ FractalManager::FractalManager(Fractal* f, sf::Window* window) :
 	zoom_time_(0.01)
 
 {
-	width_ = fractal_->getTexture()->getSize().x;
-	height_ = fractal_->getTexture()->getSize().y;
-
+	fractal_ = new Fractal(width_, height_);
 	colourManager_ = new ColourManager();
 }
 

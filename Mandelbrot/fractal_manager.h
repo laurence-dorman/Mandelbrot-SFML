@@ -6,12 +6,12 @@
 #include "fractal.h"
 #include "colour_manager.h"
 
+typedef std::chrono::high_resolution_clock the_clock;
 
 class FractalManager
 {
-
 public:
-	FractalManager(Fractal* f, sf::Window* window);
+	FractalManager(sf::Window* window);
 	~FractalManager();
 
 	void update();
@@ -22,6 +22,8 @@ public:
 	void handleMouseInput();
 	void handleScrollInput(float delta);
 	void handleKeyboardInput();
+
+	Fractal* getFractal() { return fractal_; }
 
 private:
 	Fractal* fractal_;
@@ -47,8 +49,6 @@ private:
 	int num_frames_;
 	double pos_x_, pos_y_;
 	double zoom_time_;
-
-	typedef std::chrono::high_resolution_clock the_clock;
 
 	the_clock::time_point start_animation_;
 };
