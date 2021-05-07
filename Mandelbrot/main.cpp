@@ -209,9 +209,9 @@ void handleMouseInput()
 	}
 }
 
-void handleScrollInput(sf::Event* event) 
+void handleScrollInput(float delta) 
 {
-	max_iterations += event->mouseWheelScroll.delta*10;
+	max_iterations += delta*10;
 	zoom_iter_add = max_iterations;
 	runFarm();
 }
@@ -246,8 +246,8 @@ void handleKeyboardInput()
 int main()
 {
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot " + std::to_string(width) + "x" + std::to_string(height), sf::Style::Titlebar);
-	fractal = new Fractal(width, height);
 
+	fractal = new Fractal(width, height);
 	colourManager = new ColourManager();
 
 	runFarm();
@@ -271,12 +271,9 @@ int main()
 			}
 			if (event.type == sf::Event::MouseWheelScrolled) 
 			{
-				handleScrollInput(&event);
+				handleScrollInput(event.mouseWheelScroll.delta);
 			}
 		}
-
-		//lerpToPos(-0.17151439017639816265, 0.83499604942995442336, 0.5, 0.005);
-		//lerpToPos(-1.2102340002812257413, 0.17016643387500379747, 0.3, 0.02);
 
 		if (lerping) {
 			runAnimation(num_frames, 1.0, zoom_time);
