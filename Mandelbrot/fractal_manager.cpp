@@ -41,6 +41,11 @@ FractalManager::FractalManager(sf::Window* window) :
 
 FractalManager::~FractalManager()
 {
+	delete fractal_;
+	fractal_ = NULL;
+
+	delete colourManager_;
+	colourManager_ = NULL;
 }
 
 void FractalManager::update()
@@ -96,6 +101,8 @@ void FractalManager::runFarm()
 
 void FractalManager::runAnimation(int frames, double m_t, double z_t)
 {
+	the_clock::time_point start_animation_;
+
 	// creates frames for an animation and saves to output folder
 	if (frames_done_ < frames) {
 		if (frames_done_ == 0) {
@@ -144,7 +151,6 @@ void FractalManager::runAnimation(int frames, double m_t, double z_t)
 
 		lerping_ = false;
 		frames_done_ = 0;
-		reset();
 	}
 }
 

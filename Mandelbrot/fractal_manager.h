@@ -19,10 +19,12 @@ public:
 	void runFarm();
 	void reset();
 
+	// Input functions
 	void handleMouseInput();
 	void handleScrollInput(float delta);
 	void handleKeyboardInput();
 
+	// Returns pointer to fractal object
 	Fractal* getFractal() { return fractal_; }
 
 private:
@@ -34,14 +36,19 @@ private:
 	void lerpToPos(double x, double y, double m_t, double z_t);
 	void runAnimation(int frames, double m_t, double z_t);
 
-	double l, r, t, b;
-
-	unsigned int width_, height_;
+	// variables for fractal view square
+	double l, r, t, b; // left, right, top, bottom
 	double view_width_, view_height_;
-	int max_iterations_;
-	double zoom_iter_add_;
-	int mode_;
-	std::string file_name_;
+
+	// variables for interacting with fractal
+	int max_iterations_; // maximum fractal iterations
+	double zoom_iter_add_; // amount to zoom in 
+
+	// variables for fractal (sprite) size
+	unsigned int width_, height_;
+	
+	int mode_; // fractal mode
+	std::string file_name_; // if user runs animation this will be the file name of generated png's followed by its index value
 
 	// vars for animations
 	bool lerping_;
@@ -50,6 +57,5 @@ private:
 	double pos_x_, pos_y_;
 	double zoom_time_;
 
-	the_clock::time_point start_animation_;
 };
 
