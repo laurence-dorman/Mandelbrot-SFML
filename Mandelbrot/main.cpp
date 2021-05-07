@@ -5,7 +5,6 @@
 int main()
 {
 	sf::RenderWindow* window;
-	FractalManager* fractalManager;
 
 	// set window size to be 75% of screen size
 	unsigned int width = sf::VideoMode::getDesktopMode().width * 0.75;
@@ -13,9 +12,9 @@ int main()
 
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot " + std::to_string(width) + "x" + std::to_string(height), sf::Style::Titlebar);
 
-	fractalManager = new FractalManager(window);
+	FractalManager fractalManager(window);
 
-	fractalManager->runFarm();
+	fractalManager.runFarm();
 
 	while (window->isOpen())
 	{
@@ -28,24 +27,27 @@ int main()
 			}
 			if (event.type == sf::Event::KeyPressed)
 			{
-				fractalManager->handleKeyboardInput();
+				fractalManager.handleKeyboardInput();
 			}
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
-				fractalManager->handleMouseInput();
+				fractalManager.handleMouseInput();
 			}
 			if (event.type == sf::Event::MouseWheelScrolled) 
 			{
-				fractalManager->handleScrollInput(event.mouseWheelScroll.delta);
+				fractalManager.handleScrollInput(event.mouseWheelScroll.delta);
 			}
 		}
 
-		fractalManager->update();
+		fractalManager.update();
 
 		window->clear();
-		window->draw(*fractalManager->getFractal());
+		window->draw(*fractalManager.getFractal());
 		window->display();
 	}
+
+	delete window;
+	window = NULL;
 
 	return 0;
 }
