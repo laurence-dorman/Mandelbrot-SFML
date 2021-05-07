@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="colour_manager.cpp" />
     <ClCompile Include="farm.cpp" />
     <ClCompile Include="multibrot_task.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="task.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="colour_manager.h" />
     <ClInclude Include="farm.h" />
     <ClInclude Include="multibrot_task.h" />
     <ClInclude Include="fractal.h" />

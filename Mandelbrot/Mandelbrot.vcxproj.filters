@@ -33,6 +33,9 @@
     <ClCompile Include="multibrot_task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="colour_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="farm.h">
@@ -52,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="colour_manager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
