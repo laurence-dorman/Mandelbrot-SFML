@@ -55,7 +55,7 @@ void MandelbrotTask::run()
 				// iterations. This point isn't in the set.
 
 				if (current_scheme != -1) {
-					image_->setPixel(x, y, getColour(iterations)); // get colour based on iterations
+					image_->setPixel(x, y, getColour(iterations, colour_schemes_ptr, current_scheme, iterations_)); // get colour based on iterations
 				}
 				else {
 					image_->setPixel(x, y, sf::Color::White); // get colour based on iterations
@@ -63,20 +63,4 @@ void MandelbrotTask::run()
 			}
 		}
 	}
-}
-
-// Mandelbrot colouring method from here https://github.com/sevity/mandelbrot/blob/master/nothing.cpp and discussed here https://stackoverflow.com/questions/16500656/which-color-gradient-is-used-to-color-mandelbrot-in-wikipedia
-
-sf::Color MandelbrotTask::getColour(int i)
-{
-	auto colour = (*colour_schemes_ptr)[current_scheme];
-	
-	auto max_color = colour.size() - 1;
-	if (i == iterations_) i = 0;
-	
-	double mu = 1.0 * i / iterations_;
-	mu*= max_color;
-	auto i_mu = static_cast<size_t>(mu);
-	
-	return linearInterpolation(colour[i_mu], colour[std::min(i_mu + 1, max_color)], mu - i_mu);
 }
