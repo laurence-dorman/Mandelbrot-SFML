@@ -8,6 +8,12 @@
 
 typedef std::chrono::high_resolution_clock the_clock;
 
+// default values for l r t b
+#define DEF_L -2.0
+#define DEF_R 1.0
+#define DEF_T 1.5
+#define DEF_B -1.5
+
 class FractalManager
 {
 public:
@@ -56,6 +62,8 @@ private:
 	int num_frames_;
 	double pos_x_, pos_y_;
 	double zoom_time_;
+
+	double ratio;
 
 };
 

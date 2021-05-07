@@ -21,10 +21,10 @@ FractalManager::FractalManager(sf::Window* window) :
 	zoom_iter_add_(max_iterations_),
 	mode_(1), // mandelbrot is 1, multibrot is 2
 	lerping_(false),
-	l(-2.25),
-	r(0.75),
-	t(1.5),
-	b(-1.5),
+	l(DEF_L),
+	r(DEF_R),
+	t(DEF_T),
+	b(DEF_B),
 	view_width_(std::abs(r - l)),
 	view_height_(std::abs(t - b)),
 	file_name_("output"),
@@ -35,6 +35,14 @@ FractalManager::FractalManager(sf::Window* window) :
 	zoom_time_(0.01)
 
 {
+	// sets mandelbrot size to match window aspect ratio
+	ratio = double(width_) / double(height_);
+
+	l *= ratio;
+	r *= ratio;
+
+	updateViewSize();
+
 	fractal_ = new Fractal(width_, height_);
 	colourManager_ = new ColourManager();
 }
@@ -247,7 +255,7 @@ void FractalManager::handleKeyboardInput()
 void FractalManager::reset()
 {
 	// reset to initial square
-	l = -2.25; r = 0.75; t = 1.5; b = -1.5;
+	l = (DEF_L * ratio); r = (DEF_R * ratio); t = DEF_T; b = DEF_B;
 	max_iterations_ = 128;
 	zoom_iter_add_ = max_iterations_;
 

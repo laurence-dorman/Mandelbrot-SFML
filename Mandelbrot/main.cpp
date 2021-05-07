@@ -7,11 +7,9 @@ int main()
 	sf::RenderWindow* window;
 	FractalManager* fractalManager;
 
-	// set window size to be a square 85% of window height
-	unsigned int screen_height = sf::VideoMode::getDesktopMode().height * 0.85;
-
-	unsigned int width = screen_height;
-	unsigned int height = screen_height;
+	// set window size to be 75% of screen size
+	unsigned int width = sf::VideoMode::getDesktopMode().width * 0.75;
+	unsigned int height = sf::VideoMode::getDesktopMode().height * 0.75;
 
 	window = new sf::RenderWindow(sf::VideoMode(width, height), "Mandelbrot " + std::to_string(width) + "x" + std::to_string(height), sf::Style::Titlebar);
 
