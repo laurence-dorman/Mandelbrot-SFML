@@ -52,6 +52,9 @@ void FractalManager::update()
 
 void FractalManager::runFarm()
 {
+	// Start timing
+	the_clock::time_point start = the_clock::now();
+
 	Farm farm;
 
 	const double num_segments = height_;
@@ -69,9 +72,6 @@ void FractalManager::runFarm()
 			break;
 		}
 	}
-
-	// Start timing
-	the_clock::time_point start = the_clock::now();
 
 	farm.run();
 	fractal_->update(lerping_, file_name_.c_str());
@@ -92,107 +92,6 @@ void FractalManager::runFarm()
 		"\nTheme: " << colourManager_->current_scheme <<
 		"\nTime taken: " << time_taken << "ms." <<
 		std::endl << std::endl;
-}
-
-void FractalManager::reset()
-{
-	// reset to initial square
-	l = -2.25; r = 0.75; t = 1.5; b = -1.5;
-	max_iterations_ = 128;
-	zoom_iter_add_ = max_iterations_;
-
-	updateViewSize();
-	runFarm();
-}
-
-void FractalManager::handleMouseInput()
-{
-	// convert click location on window to coordinates inside the mandelbrot square and then lerp to it
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		lerpToPos(sf::Mouse::getPosition(*window_).x / (double)width_ * view_width_ + l, sf::Mouse::getPosition(*window_).y / (double)height_ * -view_height_ + t, 1.0, 0.3);
-	}
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-	{
-		lerpToPos(sf::Mouse::getPosition(*window_).x / (double)width_ * view_width_ + l, sf::Mouse::getPosition(*window_).y / (double)height_ * -view_height_ + t, 1.0, -0.3);
-	}
-}
-
-void FractalManager::handleScrollInput(float delta)
-{
-	max_iterations_ += delta * 10;
-	zoom_iter_add_ = max_iterations_;
-	runFarm();
-}
-
-void FractalManager::handleKeyboardInput()
-{
-	bool redraw = colourManager_->handleInput();
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
-		mode_ = 1;
-		redraw = true;
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
-		mode_ = 2;
-		redraw = true;
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-		reset();
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
-		if (lerping_ == false) {
-			lerping_ = true;
-		}
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-		window_->close();
-	}
-
-	if (redraw) runFarm();
-}
-
-void FractalManager::updateViewSize()
-{
-	// update view size variables since these will change everytime we move/zoom
-	view_width_ = std::abs(r - l);
-	view_height_ = std::abs(t - b);
-}
-
-void FractalManager::lerpToPos(double x, double y, double m_t, double z_t)
-{
-	// x, y is the center of the new view rectangle, m_t is the movement lerp "time" (0-1), z_t is the zoom lerp "time" (0-1), z_t can be negative to zoom out.
-
-	//std::cout <<  "\n\ndouble centre_x = " << x << "; double centre_y = " << y << ";" << std::endl;
-	std::cout << "Lerping to pos: " << x << ", " << y << std::endl;
-
-	updateViewSize();
-
-	// zoom in (lerp the edges toward eachother based on z_t)
-	l = std::lerp(l, r, z_t);
-	r = std::lerp(r, l, z_t);
-
-	t = std::lerp(t, b, z_t);
-	b = std::lerp(b, t, z_t);
-
-	updateViewSize();
-
-	// move to new view rectangle (lerp the edges toward their new edge centered around x, y, based on m_t)
-
-	l = std::lerp(l, x - view_width_ / 2, m_t);
-	r = std::lerp(r, x + view_width_ / 2, m_t);
-
-	t = std::lerp(t, y + view_height_ / 2, m_t);
-	b = std::lerp(b, y - view_height_ / 2, m_t);
-
-	updateViewSize();
-	runFarm();
-
-	zoom_iter_add_ += (double)100 * z_t;
-	max_iterations_ = (int)zoom_iter_add_; // increase detail (max_iterations) as we zoom in, and decrease as we zoom out
-	if (max_iterations_ <= 0) {
-		max_iterations_ = 10;
-	}
 }
 
 void FractalManager::runAnimation(int frames, double m_t, double z_t)
@@ -247,4 +146,105 @@ void FractalManager::runAnimation(int frames, double m_t, double z_t)
 		frames_done_ = 0;
 		reset();
 	}
+}
+
+void FractalManager::lerpToPos(double x, double y, double m_t, double z_t)
+{
+	// x, y is the center of the new view rectangle, m_t is the movement lerp "time" (0-1), z_t is the zoom lerp "time" (0-1), z_t can be negative to zoom out.
+
+	//std::cout <<  "\n\ndouble centre_x = " << x << "; double centre_y = " << y << ";" << std::endl;
+	std::cout << "Lerping to pos: " << x << ", " << y << std::endl;
+
+	updateViewSize();
+
+	// zoom in (lerp the edges toward eachother based on z_t)
+	l = std::lerp(l, r, z_t);
+	r = std::lerp(r, l, z_t);
+
+	t = std::lerp(t, b, z_t);
+	b = std::lerp(b, t, z_t);
+
+	updateViewSize();
+
+	// move to new view rectangle (lerp the edges toward their new edge centered around x, y, based on m_t)
+
+	l = std::lerp(l, x - view_width_ / 2, m_t);
+	r = std::lerp(r, x + view_width_ / 2, m_t);
+
+	t = std::lerp(t, y + view_height_ / 2, m_t);
+	b = std::lerp(b, y - view_height_ / 2, m_t);
+
+	updateViewSize();
+	runFarm();
+
+	zoom_iter_add_ += (double)100 * z_t;
+	max_iterations_ = (int)zoom_iter_add_; // increase detail (max_iterations) as we zoom in, and decrease as we zoom out
+	if (max_iterations_ <= 0) {
+		max_iterations_ = 10;
+	}
+}
+
+void FractalManager::updateViewSize()
+{
+	// update view size variables since these will change everytime we move/zoom
+	view_width_ = std::abs(r - l);
+	view_height_ = std::abs(t - b);
+}
+
+void FractalManager::handleMouseInput()
+{
+	// convert click location on window to coordinates inside the mandelbrot square and then lerp to it
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		lerpToPos(sf::Mouse::getPosition(*window_).x / (double)width_ * view_width_ + l, sf::Mouse::getPosition(*window_).y / (double)height_ * -view_height_ + t, 1.0, 0.3);
+	}
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		lerpToPos(sf::Mouse::getPosition(*window_).x / (double)width_ * view_width_ + l, sf::Mouse::getPosition(*window_).y / (double)height_ * -view_height_ + t, 1.0, -0.3);
+	}
+}
+
+void FractalManager::handleScrollInput(float delta)
+{
+	max_iterations_ += delta * 10;
+	zoom_iter_add_ = max_iterations_;
+	runFarm();
+}
+
+void FractalManager::handleKeyboardInput()
+{
+	bool redraw = colourManager_->handleInput();
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
+		mode_ = 1;
+		redraw = true;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+		mode_ = 2;
+		redraw = true;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+		reset();
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+		if (lerping_ == false) {
+			lerping_ = true;
+		}
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		window_->close();
+	}
+
+	if (redraw) runFarm();
+}
+
+void FractalManager::reset()
+{
+	// reset to initial square
+	l = -2.25; r = 0.75; t = 1.5; b = -1.5;
+	max_iterations_ = 128;
+	zoom_iter_add_ = max_iterations_;
+
+	updateViewSize();
+	runFarm();
 }
