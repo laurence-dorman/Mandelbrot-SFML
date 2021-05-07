@@ -63,6 +63,7 @@ private:
 	double pos_x_, pos_y_;
 	double zoom_time_;
 
+	// For scaling mandelbrot based on window size
 	double ratio;
 
 };

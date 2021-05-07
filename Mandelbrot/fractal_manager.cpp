@@ -107,6 +107,7 @@ void FractalManager::runFarm()
 		std::endl << std::endl;
 }
 
+// Runs animation and saves frames to file, frames = num of frames in animation, m_t is how much to move lerp per frame, z_t is how much to zoom lerp per frame
 void FractalManager::runAnimation(int frames, double m_t, double z_t)
 {
 	the_clock::time_point start_animation_;
@@ -162,6 +163,7 @@ void FractalManager::runAnimation(int frames, double m_t, double z_t)
 	}
 }
 
+// Lerps the view rectangles edges towards eachother and lerps to position x y
 void FractalManager::lerpToPos(double x, double y, double m_t, double z_t)
 {
 	// x, y is the center of the new view rectangle, m_t is the movement lerp "time" (0-1), z_t is the zoom lerp "time" (0-1), z_t can be negative to zoom out.
@@ -198,6 +200,7 @@ void FractalManager::lerpToPos(double x, double y, double m_t, double z_t)
 	}
 }
 
+// Updates view width/height variables
 void FractalManager::updateViewSize()
 {
 	// update view size variables since these will change everytime we move/zoom
@@ -220,6 +223,7 @@ void FractalManager::handleMouseInput()
 
 void FractalManager::handleScrollInput(float delta)
 {
+	// delta is how much scrollwheel moved, positive is up, negative is down
 	max_iterations_ += delta * 10;
 	zoom_iter_add_ = max_iterations_;
 	runFarm();
@@ -249,7 +253,7 @@ void FractalManager::handleKeyboardInput()
 		window_->close();
 	}
 
-	if (redraw) runFarm();
+	if (redraw) runFarm(); // only run farm if necessary
 }
 
 void FractalManager::reset()
