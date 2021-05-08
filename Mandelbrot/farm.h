@@ -6,7 +6,6 @@
 #include <queue>
 #include <mutex>
 
-
 /** A collection of tasks that should be performed in parallel. */
 class Farm {
 public:
