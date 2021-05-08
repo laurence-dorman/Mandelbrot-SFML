@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "fractal_manager.h"
-#include "utils.h"
 
 void printControls() {
 	std::cout << "CONTROLS:\n" << std::endl;
