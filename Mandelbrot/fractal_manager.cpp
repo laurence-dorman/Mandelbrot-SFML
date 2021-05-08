@@ -23,6 +23,7 @@ FractalManager::FractalManager(sf::Window* window) :
 	b(DEF_B),
 	view_width_(std::abs(r - l)),
 	view_height_(std::abs(t - b)),
+	write_mode_(true),
 	file_name_("output"),
 	frames_done_(0),
 	num_frames_(20),
@@ -89,6 +90,13 @@ void FractalManager::runFarm()
 	auto time_taken = clockStop(start);
 
 	updateViewSize();
+
+	if (write_mode_) {
+		std::ofstream output_file;
+		output_file.open("output/" + file_name_ + ".csv", std::ios::app); // Open file with append flag, so we dont overwrite
+
+		output_file << time_taken << "," <<  std::endl;
+	}
 
 	std::cout << std::setprecision(20) <<
 		"Mode: " << mode_ <<

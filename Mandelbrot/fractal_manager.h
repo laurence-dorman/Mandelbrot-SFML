@@ -68,6 +68,7 @@ private:
 	
 	int mode_; // fractal mode
 	std::string file_name_; // if user runs animation this will be the file name of generated png's followed by its index value
+	bool write_mode_;
 
 	// vars for animations
 	bool lerping_;
