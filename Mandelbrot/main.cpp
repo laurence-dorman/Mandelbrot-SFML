@@ -21,7 +21,7 @@ int main()
 	printControls();
 
 	double size = 0.0;
-	std::cout << "Enter scale % of window (0-100)\n>> ";
+	std::cout << "Enter desired scale % of window relative to screen resolution (0-100)\n>> ";
 	std::cin >> size;
 	size /= 100;
 
