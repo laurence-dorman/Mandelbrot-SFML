@@ -64,10 +64,25 @@ void FractalManager::update()
 	}
 }
 
+// clockStart function, returns time_point of the_clock - used for timing
+the_clock::time_point clockStart() {
+	// Start timing
+	return the_clock::now();
+}
+
+// clockStop function, takes in time_point start clock start value, gets current time, returns difference between the 2 - used for measuring and comparing time
+long long clockStop(the_clock::time_point start) {
+	// Stop timing
+	the_clock::time_point end = the_clock::now();
+
+	// Compute the difference between the two times in milliseconds
+	return duration_cast<milliseconds>(end - start).count();
+}
+
 void FractalManager::runFarm()
 {
 	// Start timing
-	the_clock::time_point start = the_clock::now();
+	auto start = clockStart();
 
 	Farm farm;
 
@@ -91,10 +106,7 @@ void FractalManager::runFarm()
 	fractal_->update(lerping_, file_name_.c_str());
 
 	// Stop timing
-	the_clock::time_point end = the_clock::now();
-
-	// Compute the difference between the two times in milliseconds
-	auto time_taken = duration_cast<milliseconds>(end - start).count();
+	auto time_taken = clockStop(start);
 
 	updateViewSize();
 
@@ -108,21 +120,6 @@ void FractalManager::runFarm()
 		"\nTheme: " << colourManager_->current_scheme <<
 		"\nTime taken: " << time_taken << "ms." <<
 		std::endl << std::endl;
-}
-
-// clockStart function, returns time_point of the_clock - used for timing
-the_clock::time_point clockStart() {
-	// Start timing
-	return the_clock::now();
-}
-
-// clockStop function, takes in time_point start clock start value, gets current time, returns difference between the 2 - used for measuring and comparing time
-long long clockStop(the_clock::time_point start) {
-	// Stop timing
-	the_clock::time_point end = the_clock::now();
-
-	// Compute the difference between the two times in milliseconds
-	return duration_cast<milliseconds>(end - start).count();
 }
 
 // Runs animation and saves frames to file, frames = num of frames in animation, m_t is how much to move lerp per frame, z_t is how much to zoom lerp per frame
