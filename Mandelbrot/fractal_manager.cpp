@@ -96,6 +96,8 @@ void FractalManager::runFarm()
 	// Compute the difference between the two times in milliseconds
 	auto time_taken = duration_cast<milliseconds>(end - start).count();
 
+	updateViewSize();
+
 	std::cout << std::setprecision(20) <<
 		"Mode: " << mode_ <<
 		"\nLeft X: " << l <<
@@ -187,8 +189,6 @@ void FractalManager::lerpToPos(double x, double y, double m_t, double z_t)
 	//std::cout <<  "\n\ndouble centre_x = " << x << "; double centre_y = " << y << ";" << std::endl;
 	std::cout << "Lerping to pos: " << x << ", " << y << std::endl;
 
-	updateViewSize();
-
 	// zoom in (lerp the edges toward eachother based on z_t)
 	l = std::lerp(l, r, z_t);
 	r = std::lerp(r, l, z_t);
@@ -206,7 +206,6 @@ void FractalManager::lerpToPos(double x, double y, double m_t, double z_t)
 	t = std::lerp(t, y + view_height_ / 2, m_t);
 	b = std::lerp(b, y - view_height_ / 2, m_t);
 
-	updateViewSize();
 	runFarm();
 
 	zoom_iter_add_ += (double)100 * z_t;
