@@ -51,7 +51,10 @@ int main()
 				{
 					printControls();
 				}
-				fractalManager.handleKeyboardInput();
+				else 
+				{
+					fractalManager.handleKeyboardInput();
+				}
 			}
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
