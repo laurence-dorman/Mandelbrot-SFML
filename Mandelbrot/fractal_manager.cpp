@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <fstream>
 
 #include "farm.h"
 #include "mandelbrot_task.h"
@@ -36,10 +37,10 @@ FractalManager::FractalManager(sf::Window* window) :
 
 {
 	// sets mandelbrot size to match window aspect ratio
-	ratio = double(width_) / double(height_);
+	ratio_ = double(width_) / double(height_);
 
-	l *= ratio;
-	r *= ratio;
+	l *= ratio_;
+	r *= ratio_;
 
 	updateViewSize();
 
@@ -107,11 +108,24 @@ void FractalManager::runFarm()
 		std::endl << std::endl;
 }
 
+// clockStart function, returns time_point of the_clock - used for timing
+the_clock::time_point clockStart() {
+	// Start timing
+	return the_clock::now();
+}
+
+// clockStop function, takes in time_point start clock start value, gets current time, returns difference between the 2 - used for measuring and comparing time
+long long clockStop(the_clock::time_point start) {
+	// Stop timing
+	the_clock::time_point end = the_clock::now();
+
+	// Compute the difference between the two times in milliseconds
+	return duration_cast<milliseconds>(end - start).count();
+}
+
 // Runs animation and saves frames to file, frames = num of frames in animation, m_t is how much to move lerp per frame, z_t is how much to zoom lerp per frame
 void FractalManager::runAnimation(int frames, double m_t, double z_t)
 {
-	the_clock::time_point start_animation_;
-
 	// creates frames for an animation and saves to output folder
 	if (frames_done_ < frames) {
 		if (frames_done_ == 0) {
@@ -142,7 +156,7 @@ void FractalManager::runAnimation(int frames, double m_t, double z_t)
 			std::cout << "\nEnter the filename\n>> ";
 			std::cin >> file_name_;
 
-			start_animation_ = the_clock::now(); // start timer
+			start_animation_ = clockStart(); // start timer
 
 			reset(); // go to start
 		}
@@ -150,13 +164,15 @@ void FractalManager::runAnimation(int frames, double m_t, double z_t)
 		frames_done_++; // incrase frames done
 	}
 	else {
-		// Stop timing
-		the_clock::time_point end = the_clock::now();
-
-		// Compute the difference between the two times in milliseconds
-		auto time_taken = duration_cast<milliseconds>(end - start_animation_).count();
+		
+		auto time_taken = clockStop(start_animation_);
 
 		std::cout << "Total time taken for animation: " << time_taken << "ms.\n\n";
+
+		std::ofstream output_file;
+		output_file.open("output/" + file_name_ + ".txt", std::ios::app); // Open file with append flag, so we dont overwrite
+
+		output_file << time_taken << std::endl;
 
 		lerping_ = false;
 		frames_done_ = 0;
@@ -259,7 +275,7 @@ void FractalManager::handleKeyboardInput()
 void FractalManager::reset()
 {
 	// reset to initial square
-	l = (DEF_L * ratio); r = (DEF_R * ratio); t = DEF_T; b = DEF_B;
+	l = (DEF_L * ratio_); r = (DEF_R * ratio_); t = DEF_T; b = DEF_B;
 	max_iterations_ = 128;
 	zoom_iter_add_ = max_iterations_;
 

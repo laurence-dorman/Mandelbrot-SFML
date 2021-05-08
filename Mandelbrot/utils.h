@@ -27,3 +27,4 @@ inline sf::Color getColour(int i, std::vector<std::vector<sf::Color>> *col_schem
 
 	return linearInterpolation(colour[i_mu], colour[std::min(i_mu + 1, max_color)], mu - i_mu);
 }
+

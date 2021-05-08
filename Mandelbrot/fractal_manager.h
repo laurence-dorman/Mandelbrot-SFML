@@ -64,7 +64,9 @@ private:
 	double zoom_time_;
 
 	// For scaling mandelbrot based on window size
-	double ratio;
+	double ratio_;
+
+	the_clock::time_point start_animation_;
 
 };
 
