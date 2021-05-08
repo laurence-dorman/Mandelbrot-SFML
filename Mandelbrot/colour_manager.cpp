@@ -55,6 +55,11 @@ ColourManager::ColourManager()
 	num_schemes = colour_schemes.size();
 }
 
+sf::Uint8 generateColour()
+{
+	return sf::Uint8(rand() + 255);
+}
+
 void ColourManager::addRandomScheme(int rows)
 {
 	int num_colours = rows;

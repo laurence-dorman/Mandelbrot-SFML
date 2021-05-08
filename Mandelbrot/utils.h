@@ -9,11 +9,6 @@ inline sf::Color linearInterpolation(sf::Color& v, const sf::Color& u, double a)
 	return sf::Color(b * v.r + a * u.r, b * v.g + a * u.g, b * v.b + a * u.b);
 }
 
-inline sf::Uint8 generateColour()
-{
-	return sf::Uint8(rand() + 255);
-}
-
 inline sf::Color getColour(int i, std::vector<std::vector<sf::Color>> *col_scheme_ptr, int current_scheme, int max_i)
 {
 	auto colour = (*col_scheme_ptr)[current_scheme];
