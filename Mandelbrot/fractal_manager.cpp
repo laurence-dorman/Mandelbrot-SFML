@@ -9,11 +9,6 @@
 #include "mandelbrot_task.h"
 #include "multibrot_task.h"
 
-typedef std::chrono::high_resolution_clock the_clock;
-
-using std::chrono::duration_cast;
-using std::chrono::milliseconds;
-
 FractalManager::FractalManager(sf::Window* window) :
 	window_(window),
 	width_(window_->getSize().x),
@@ -63,8 +58,6 @@ void FractalManager::update()
 		runAnimation(num_frames_, 1.0, zoom_time_);
 	}
 }
-
-
 
 void FractalManager::runFarm()
 {

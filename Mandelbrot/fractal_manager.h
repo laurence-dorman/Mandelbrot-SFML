@@ -8,6 +8,9 @@
 
 typedef std::chrono::high_resolution_clock the_clock;
 
+using std::chrono::duration_cast;
+using std::chrono::milliseconds;
+
 // default values for l r t b
 #define DEF_L -2.0
 #define DEF_R 1.0
