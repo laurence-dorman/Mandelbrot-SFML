@@ -42,6 +42,12 @@ private:
 	void lerpToPos(double x, double y, double m_t, double z_t);
 	void runAnimation(int frames, double m_t, double z_t);
 
+	// clockStart function, returns time_point of the_clock - used for timing
+	the_clock::time_point clockStart() { return the_clock::now();}
+
+	// clockStop function, takes in time_point start clock start value, returns difference between current time
+	long long clockStop(the_clock::time_point start) { return duration_cast<milliseconds>(the_clock::now() - start).count(); }
+
 	// variables for fractal view square
 	double l, r, t, b; // left, right, top, bottom
 	double view_width_, view_height_;

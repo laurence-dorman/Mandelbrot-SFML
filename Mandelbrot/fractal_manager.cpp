@@ -64,20 +64,7 @@ void FractalManager::update()
 	}
 }
 
-// clockStart function, returns time_point of the_clock - used for timing
-the_clock::time_point clockStart() {
-	// Start timing
-	return the_clock::now();
-}
 
-// clockStop function, takes in time_point start clock start value, gets current time, returns difference between the 2 - used for measuring and comparing time
-long long clockStop(the_clock::time_point start) {
-	// Stop timing
-	the_clock::time_point end = the_clock::now();
-
-	// Compute the difference between the two times in milliseconds
-	return duration_cast<milliseconds>(end - start).count();
-}
 
 void FractalManager::runFarm()
 {
