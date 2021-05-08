@@ -4,7 +4,7 @@
 #include "fractal_manager.h"
 #include "utils.h"
 
-inline void printControls() {
+void printControls() {
 	std::cout << "CONTROLS:\n" << std::endl;
 	std::cout << "- *Mouse left click* to zoom in on click location.\n" << std::endl;
 	std::cout << "- *Mouse right click* to zoom out on click location.\n" << std::endl;
