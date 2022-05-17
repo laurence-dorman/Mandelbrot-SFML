@@ -1,4 +1,4 @@
-# Mandelbrot generator made with SFML
+# CPU multithreaded Mandelbrot generator made with SFML
 
 ## Second year Abertay university assignment.
 
