@@ -1,4 +1,4 @@
-# Mandelbrot generator made with SFML for module CMP202
+# Mandelbrot generator made with SFML
 
 ### Controls
 
