@@ -1,5 +1,7 @@
 # Mandelbrot generator made with SFML
 
+## Second year Abertay university assignment.
+
 ### Controls
 
 - **Mouse left click** to zoom in on click location.
